@@ -9,12 +9,12 @@
 </head>
 <body>
 	<h1>欢迎<s:property value="username" /></h1>
-	<s:form action="showtecahers">
-		<s:submit value="家教公示"/>
-	</s:form>
-	<s:form action="showtecahers">
-		<s:submit value="学生公示"/>
-	</s:form>
+	<a href = "show.action?jb=1">
+		家教公示
+	</a>
+	<a href = "show.action?jb=0">
+		学生公示
+	</a>
 	<s:form action="showtecahers">
 		<s:submit value="您的邮箱"/>
 	</s:form>
@@ -46,12 +46,12 @@
 			</tr>
 			<s:iterator value="result"> 
 		    <tr>
-		    	<td>${username}</td> 
-		    	<td>${name}</td>
-		    	<td>${sex}</td>
-		    	<td>${tel}</td>
-		    	<td>${grade}</td>
-		    	<td>${subject}</td>
+		    	<td><s:property value="username" /></td> 
+		    	<td><s:property value="name" /></td>
+		    	<td><s:property value="sex" /></td>
+		    	<td><s:property value="tel"/></td>
+		    	<td><s:property value="grade"/></td>
+		    	<td><s:property value="subject"/></td>
 			<tr></tr><br>
 			</s:iterator> 
 		</table>

@@ -18,6 +18,7 @@ public class Action_Login extends ActionSupport {
 	String tel;
 	int MESID;
 	int PJID;
+	int unread;
 	ArrayList<man_out> result = new ArrayList<man_out>();
 	ArrayList<man_out> convertResult(ArrayList<Man> ipt){
 		ArrayList<man_out> ans=new ArrayList<man_out>();
@@ -53,18 +54,28 @@ public class Action_Login extends ActionSupport {
 	}
 	private String convertSubjects(String subject) {
 		String ans="";
-		String[] dic= {"数学","语文","英语","物理","化学","生物","历史","地理","政治"};
+		String[] dic= {"数","语","外","理","化","生","史","地","政"};
+		char[] temp=subject.toCharArray();
 		for(int i=0;i<9;i++) {
-			
+			if(temp[i]=='1') {
+				ans+=dic[i];
+			}
 		}
-		return null;
+		return ans;
 	}
 	private String convertGrades(String grade) {
-		// TODO Auto-generated method stub
-		return null;
+		String ans="";
+		String[] dic= {"小一","小二","小三","小四","小五","小六","初一","初二","初三","高一","高二","高三"};
+		char[] temp=grade.toCharArray();
+		for(int i=0;i<12;i++) {
+			if(temp[i]=='1') {
+				ans+=dic[i];
+			}
+		}
+		return ans;
 	}
 	public String login() {
-		person=new Man(username,2,null,2,pwd,null,null,null,0,0);
+		person=new Man(username,2,null,2,pwd,null,null,null,0,0,0);
 		person=DbTools.Fill(person);
 		if(person==null)
 		{			

@@ -79,7 +79,7 @@ public class DbTools {
 	try {
 	     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=false","root","1234");
 	     Statement=connect.prepareStatement("INSERT INTO user VALUES"
-	     		+ "(?,?,?,?,?,?,?,?,?,?)");
+	     		+ "(?,?,?,?,?,?,?,?,?,?,?)");
 	     Statement.setString(1,m.username);
 	     Statement.setLong(2,m.job);
 	     Statement.setString(3,m.name);
@@ -90,6 +90,7 @@ public class DbTools {
 	     Statement.setString(8,m.tel);
 	     Statement.setLong(9,m.MESID);
 	     Statement.setLong(10,m.PJID);
+	     Statement.setLong(11,0);
 	     Statement.executeUpdate();
 	   }catch (SQLException e) {
            e.printStackTrace();
@@ -119,7 +120,7 @@ public class DbTools {
 		try {
 		     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=false","root","1234");
 		     Statement=connect.prepareStatement("create table " + mES +" (frm varchar(20),DTA varchar(20),STR varchar(1000))");
-		     System.out.println("create table " + mES +" (frm varchar(20),DTA varchar(20),STR varchar(1000))");
+		     System.out.println("create table " + mES +" (pos int,person varchar(20),DTA varchar(20),STR varchar(1000),readed int)");
 		     Statement.executeUpdate();
 		   }catch (SQLException e) {
 	            e.printStackTrace();
@@ -171,14 +172,15 @@ public class DbTools {
 		else
 		{
 			for(Man m1:temp) {
-				ans=new Man(m1.username,m1.job,m1.name,m1.sex,m1.pwd,m1.grade,m1.subject,m1.tel,m1.MESID,m1.PJID);
+				ans=new Man(m1.username,m1.job,m1.name,m1.sex,m1.pwd,m1.grade,m1.subject,m1.tel,m1.MESID,m1.PJID,m.unread);
 			}
 		}
 		return ans;
 	}
 	public static List<mes> QuerryMes(int MSID){
 		List<mes> ans=new ArrayList<mes>();
-		String FRM;
+		int pos;
+		String person;
 		String DTA;
 		String STR;
 		int readed;
@@ -198,11 +200,12 @@ public class DbTools {
 		     Statement=connect.prepareStatement("SELECT * FROM" + " 'mes"+String.valueOf(MSID)+"'"+" ORDER BY readed ASC");
 		     rs =Statement.executeQuery();
 		     while(rs.next()) {
-		    	 FRM=rs.getString("frm");
+		    	 pos=rs.getInt("pos");
+		    	 person=rs.getString("person");
 		    	 DTA=rs.getString("dta");
 		    	 STR=rs.getString("str");
 		    	 readed=rs.getInt("readed");
-		    	 mes m=new mes(FRM,DTA,STR,readed);
+		    	 mes m=new mes(pos,person,DTA,STR,readed);
 		    	 ans.add(m);
 		     }
 		   }catch (SQLException e) {
@@ -233,7 +236,7 @@ public class DbTools {
 		StringBuffer querying_condition1;
 		StringBuffer querying_condition2;
 		querying_condition1=new StringBuffer();
-		querying_condition1.append("SELECT username,job,name,sex,pwd,grade,subject,tel,MESID,PJID from user where");
+		querying_condition1.append("SELECT * from user where");
 //-------------------------------------------------------		
 		querying_condition2=new StringBuffer();
 		if (m.username!=null)
@@ -305,7 +308,8 @@ public class DbTools {
 				 String tel=rs.getString("tel");
 				 int MESID=rs.getInt("MESID");
 				 int PJID=rs.getInt("PJID");
-				 Man m0=new Man(username,job,name,sex,pwd,grade,subject,tel,MESID,PJID);
+				 int unread=rs.getInt("unread");
+				 Man m0=new Man(username,job,name,sex,pwd,grade,subject,tel,MESID,PJID,unread);
 				 result.add(m0);
 		     }
 		}
@@ -344,10 +348,9 @@ public class DbTools {
 		StringBuffer querying_condition2;
 		StringBuffer querying_condition3;
 		querying_condition1=new StringBuffer();
-		querying_condition1.append("SELECT DISTINCT username,job,name,sex,pwd,grade,subject,tel,MESID,PJID from user where");
+		querying_condition1.append("SELECT DISTINCT * from user where");
 //-------------------------------------------------------		
 		querying_condition2=new StringBuffer();
-		querying_condition2.append("(");
 		querying_condition3=new StringBuffer();
 		querying_condition3.append(") AND (");
 		char []list_grade;
@@ -355,25 +358,29 @@ public class DbTools {
 		char []temp;
 		list_grade=m.grade.toCharArray();
 		list_subject=m.grade.toCharArray();
+		if (m.job==0)
+			querying_condition2.append(" job=1 AND (");
+		else
+			querying_condition2.append(" job=0 AND (");
 		for (int i=0;i<12;i++)
 		{
-			temp=new char[] {0,0,0,0,0,0,0,0,0,0,0,0};
+			temp=new char[] {'_','_','_','_','_','_','_','_','_','_','_','_'};
 			if (list_grade[i]=='1')
 			{
-				temp[i]=1;
+				temp[i]='1';
 				querying_condition2.append(" grade LIKE '");
-				querying_condition2.append(temp.toString()+"' OR");
+				querying_condition2.append(String.valueOf(temp)+"' OR");
 			}
 		}
 		querying_condition1.append(querying_condition2.substring(0, querying_condition2.length()-3));
 		for (int i=0;i<9;i++)
 		{
-			temp=new char[] {0,0,0,0,0,0,0,0,0};
+			temp=new char[] {'_','_','_','_','_','_','_','_','_'};
 			if (list_subject[i]=='1')
 			{
-				temp[i]=1;
+				temp[i]='1';
 				querying_condition3.append(" subject LIKE '");
-				querying_condition3.append(temp.toString()+"' OR");
+				querying_condition3.append(String.valueOf(temp)+"' OR");
 			}
 		}
 		querying_condition1.append(querying_condition3.substring(0, querying_condition3.length()-3)+");");
@@ -397,6 +404,7 @@ public class DbTools {
 		{
 		     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
 		     Statement=connect.prepareStatement(querying_condition1.toString());
+		     System.out.println(querying_condition1.toString());
 		     rs =Statement.executeQuery();
 		     while(rs.next())
 		     {
@@ -410,7 +418,8 @@ public class DbTools {
 				 String tel=rs.getString("tel");
 				 int MESID=rs.getInt("MESID");
 				 int PJID=rs.getInt("PJID");
-				 Man m0=new Man(username,job,name,sex,pwd,grade,subject,tel,MESID,PJID);
+				 int unread=rs.getInt("unread");
+				 Man m0=new Man(username,job,name,sex,pwd,grade,subject,tel,MESID,PJID,unread);
 				 result.add(m0);
 		     }
 		}
@@ -449,13 +458,17 @@ public class DbTools {
 		char []temp;
 		result=new StringBuffer();
 		temp=grade.toCharArray();
+		System.out.println(grade);
 		for (int i=0;i<12;i++)
 		{
+			System.out.print(i+" ");
+			System.out.println(temp[i]+" ");
 			if (temp[i]=='1')
 				result.append("1");
 			else
 				result.append("_");
 		}
+		System.out.println(result);
 		return result;
 	}
 	private static StringBuffer Turn_Subject(String subject)

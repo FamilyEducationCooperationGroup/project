@@ -4,8 +4,18 @@
 <struts>
     <include file="struts-default.xml"/>
     <package name="backport" extends="struts-default">
-        <action name="login" class="backport.action1" method="login">
-            <result>HelloWorld.jsp</result>
+        <action name="signin" class="backport.Action_Signin" method="signin">
+            <result name="SUCCESS">fm.jsp</result>
+        </action>
+        <action name="login" class="backport.Action_Login" method="login">
+            <result name="SUCCESS">mw.jsp</result>
+        </action>
+        <action name="search" class="backport.Action_Search" method="search">
+        	<result name="SUCCESS">sr.jsp</result>
+        </action>
+        <action name="show" class="backport.Action_Show" method="show">
+        	<result name="SUCCESS">sr.jsp</result>
         </action>
     </package>
+    
 </struts>

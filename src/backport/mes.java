@@ -1,22 +1,32 @@
 package backport;
 public class mes {
-	public mes(String frm, String dTA, String sTR, int readed) {
+	public int getPos() {
+		return pos;
+	}
+	public void setPos(int pos) {
+		this.pos = pos;
+	}
+	public String getPerson() {
+		return person;
+	}
+	public mes(int pos, String person, String dTA, String sTR, int readed) {
 		super();
-		this.frm = frm;
+		this.pos = pos;
+		this.person = person;
 		DTA = dTA;
 		STR = sTR;
 		this.readed = readed;
 	}
-	String frm;
+	public void setPerson(String person) {
+		this.person = person;
+	}
+	int pos;
+	String person;
 	String DTA;
 	String STR;
 	int readed;
-	public String getFrm() {
-		return frm;
-	}
-	public void setFrm(String frm) {
-		this.frm = frm;
-	}
+	
+	
 	public String getDTA() {
 		return DTA;
 	}

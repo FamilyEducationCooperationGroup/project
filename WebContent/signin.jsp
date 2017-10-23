@@ -8,7 +8,7 @@
 </head>
 <body>
       <h3>请填写用户信息 </h3>
-      <s:form action="HelloWorld">
+      <s:form action="signin">
             <s:textfield label="您的用户名（此项必填）" name="username" />
             <s:password label="您的密码（此项必填）" name="pwd" />
            	<s:radio list="#{0:'学生',1:'老师'}" name="job" label="职业" required="true" value="1"></s:radio> 

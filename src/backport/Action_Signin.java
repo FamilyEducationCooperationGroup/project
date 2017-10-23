@@ -16,36 +16,33 @@ public class Action_Signin extends ActionSupport {
 	String tel;
 	int MESID;
 	int PJID;
+	int unread;
 	private String Fill_Subjects(int[] p) {
 		char []ans;
-		ans=new char[9];
-		for (int i=0;i<9;i++)
-			ans[i]=0;
+		ans=new char[]{'0','0','0','0','0','0','0','0','0'};
 		for(int i=0;i<p.length;i++)
 		{
-			ans[p[i]]=1;
+			ans[p[i]-1]='1';
 		}
-		return ans.toString();
+		return String.valueOf(ans);
 	}
 	private String Fill_Grades(int[] p) {
 		char []ans;
-		ans=new char[12];
-		for (int i=0;i<12;i++)
-			ans[i]=0;
+		ans=new char[]{'0','0','0','0','0','0','0','0','0','0','0','0'};
 		for(int i=0;i<p.length;i++)
 		{
-			ans[p[i]]=1;
+			ans[p[i]-1]='1';
 		}
-		return ans.toString();
+		return String.valueOf(ans);
 	}
 	public String signin() {
-		person=new Man(username,job,name,sex,pwd,Fill_Grades(grades),Fill_Subjects(subjects),tel,MESID,PJID);
+		person=new Man(username,job,name,sex,pwd,Fill_Grades(grades),Fill_Subjects(subjects),tel,MESID,PJID,unread);
 		Man temp;
-		temp=new Man(person.username,2,null,2,null,null,null,null,0,0);
+		temp=new Man(person.username,2,null,2,null,null,null,null,0,0,0);
 		if(person.username==null||person.pwd==null||(person.subject).equals("000000000")||(person.grade).equals("000000000000")){
 			return "FAILED1";
 		}else if(DbTools.Querry(temp)!=null){
-			temp=new Man(person.username,person.job,person.name,person.sex,person.pwd,person.grade,person.subject,person.tel,0,0);
+			temp=new Man(person.username,person.job,person.name,person.sex,person.pwd,person.grade,person.subject,person.tel,0,0,0);
 			DbTools.Add(temp);
 			return "SUCCESS";
 		}

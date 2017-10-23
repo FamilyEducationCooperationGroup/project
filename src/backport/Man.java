@@ -10,8 +10,15 @@ public class Man {
 	String tel;
 	int MESID;
 	int PJID;
+	int unread;
+	public int getUnread() {
+		return unread;
+	}
+	public void setUnread(int unread) {
+		this.unread = unread;
+	}
 	public Man(String username, int job, String name, int sex, String pwd, String grade, String subject, String tel,
-			int MESID, int PJID) {
+			int MESID, int PJID,int unread) {
 		super();
 		this.username = username;
 		this.job = job;
@@ -23,6 +30,7 @@ public class Man {
 		this.tel = tel;
 		this.MESID=MESID;
 		this.PJID=PJID;
+		this.unread=unread;
 	}
 	public String getUsername() {
 		return username;
