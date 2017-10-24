@@ -119,7 +119,7 @@ public class DbTools {
 		
 		try {
 		     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=false","root","1234");
-		     Statement=connect.prepareStatement("create table " + mES +" (frm varchar(20),DTA varchar(20),STR varchar(1000))");
+		     Statement=connect.prepareStatement("create table " + mES +" (pos int,frm varchar(20),DTA varchar(20),STR varchar(1000),readed int)");
 		     System.out.println("create table " + mES +" (pos int,person varchar(20),DTA varchar(20),STR varchar(1000),readed int)");
 		     Statement.executeUpdate();
 		   }catch (SQLException e) {
@@ -177,7 +177,7 @@ public class DbTools {
 		}
 		return ans;
 	}
-	public static List<mes> QuerryMes(int MSID){
+	public static List<mes> QuerryMes(int ps,int rd,int MSID){
 		List<mes> ans=new ArrayList<mes>();
 		int pos;
 		String person;
@@ -187,6 +187,16 @@ public class DbTools {
 		Connection connect=null;
 		PreparedStatement Statement=null;
 		ResultSet rs = null;
+		String temp="";
+		if(ps==0) {
+			temp="pos=0";
+		}
+		else if(rd==1) {
+			temp="readed=1";
+		}
+		else if(rd==0) {
+			temp="readed=0";
+		}
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 		         System.out.println("Success loading Mysql Driver1!");
@@ -197,7 +207,7 @@ public class DbTools {
 		    }
 		try {
 		     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
-		     Statement=connect.prepareStatement("SELECT * FROM" + " 'mes"+String.valueOf(MSID)+"'"+" ORDER BY readed ASC");
+		     Statement=connect.prepareStatement("SELECT * FROM" + " 'mes"+String.valueOf(MSID)+"'"+" where "+temp+" ORDER BY readed ASC");
 		     rs =Statement.executeQuery();
 		     while(rs.next()) {
 		    	 pos=rs.getInt("pos");
@@ -233,49 +243,49 @@ public class DbTools {
 	}
 	public static ArrayList<Man> Querry(Man m)
 	{
-		StringBuffer querying_condition1;
-		StringBuffer querying_condition2;
-		querying_condition1=new StringBuffer();
-		querying_condition1.append("SELECT * from user where");
+		StringBuffer querying_order1;
+		StringBuffer querying_order2;
+		querying_order1=new StringBuffer();
+		querying_order1.append("SELECT * from user where");
 //-------------------------------------------------------		
-		querying_condition2=new StringBuffer();
+		querying_order2=new StringBuffer();
 		if (m.username!=null)
 		{
-			querying_condition2.append(" username='");
-			querying_condition2.append(m.username+"' AND");
+			querying_order2.append(" username='");
+			querying_order2.append(m.username+"' AND");
 		}
 		if (m.job!=2)	
 		{
-			querying_condition2.append(" job='");
-			querying_condition2.append(String.valueOf(m.job)+"' AND");
+			querying_order2.append(" job='");
+			querying_order2.append(String.valueOf(m.job)+"' AND");
 		}
 		if (m.name!=null)
 		{
-			querying_condition2.append(" name='");
-			querying_condition2.append(m.name+"' AND");
+			querying_order2.append(" name='");
+			querying_order2.append(m.name+"' AND");
 		}
 		if (m.sex!=2)	
 		{
-			querying_condition2.append(" sex='");
-			querying_condition2.append(String.valueOf(m.sex)+"' AND");
+			querying_order2.append(" sex='");
+			querying_order2.append(String.valueOf(m.sex)+"' AND");
 		}
 		if (m.pwd!=null)
 		{
-			querying_condition2.append(" pwd='");
-			querying_condition2.append(m.pwd+"' AND");
+			querying_order2.append(" pwd='");
+			querying_order2.append(m.pwd+"' AND");
 		}
 		if (m.grade!=null)
 		{
-			querying_condition2.append(" grade LIKE '");
-			querying_condition2.append(Turn_Grade(m.grade)+"' AND");
+			querying_order2.append(" grade LIKE '");
+			querying_order2.append(Turn_Grade(m.grade)+"' AND");
 		}
 		if (m.subject!=null)
 		{
-			querying_condition2.append(" subject LIKE '");
-			querying_condition2.append(Turn_Subject(m.subject)+"' AND");
+			querying_order2.append(" subject LIKE '");
+			querying_order2.append(Turn_Subject(m.subject)+"' AND");
 		}
-		querying_condition1.append(querying_condition2.substring(0, querying_condition2.length()-4)+";");
-		System.out.println(querying_condition1);
+		querying_order1.append(querying_order2.substring(0, querying_order2.length()-4)+";");
+		System.out.println(querying_order1);
 //------------------------------------------------------
 		Connection connect=null;
 		PreparedStatement Statement=null;
@@ -294,7 +304,7 @@ public class DbTools {
 		try
 		{
 		     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
-		     Statement=connect.prepareStatement(querying_condition1.toString());
+		     Statement=connect.prepareStatement(querying_order1.toString());
 		     rs =Statement.executeQuery();
 		     while(rs.next())
 		     {
@@ -344,47 +354,47 @@ public class DbTools {
 	}
 	public static ArrayList<Man> Match(Man m)
 	{
-		StringBuffer querying_condition1;
-		StringBuffer querying_condition2;
-		StringBuffer querying_condition3;
-		querying_condition1=new StringBuffer();
-		querying_condition1.append("SELECT DISTINCT * from user where");
+		StringBuffer matching_order1;
+		StringBuffer matching_order2;
+		StringBuffer matching_order3;
+		matching_order1=new StringBuffer();
+		matching_order1.append("SELECT DISTINCT * from user where");
 //-------------------------------------------------------		
-		querying_condition2=new StringBuffer();
-		querying_condition3=new StringBuffer();
-		querying_condition3.append(") AND (");
+		matching_order2=new StringBuffer();
+		matching_order3=new StringBuffer();
+		matching_order3.append(") AND (");
 		char []list_grade;
 		char []list_subject;
 		char []temp;
 		list_grade=m.grade.toCharArray();
 		list_subject=m.grade.toCharArray();
 		if (m.job==0)
-			querying_condition2.append(" job=1 AND (");
+			matching_order2.append(" job=1 AND (");
 		else
-			querying_condition2.append(" job=0 AND (");
+			matching_order2.append(" job=0 AND (");
 		for (int i=0;i<12;i++)
 		{
 			temp=new char[] {'_','_','_','_','_','_','_','_','_','_','_','_'};
 			if (list_grade[i]=='1')
 			{
 				temp[i]='1';
-				querying_condition2.append(" grade LIKE '");
-				querying_condition2.append(String.valueOf(temp)+"' OR");
+				matching_order2.append(" grade LIKE '");
+				matching_order2.append(String.valueOf(temp)+"' OR");
 			}
 		}
-		querying_condition1.append(querying_condition2.substring(0, querying_condition2.length()-3));
+		matching_order1.append(matching_order2.substring(0, matching_order2.length()-3));
 		for (int i=0;i<9;i++)
 		{
 			temp=new char[] {'_','_','_','_','_','_','_','_','_'};
 			if (list_subject[i]=='1')
 			{
 				temp[i]='1';
-				querying_condition3.append(" subject LIKE '");
-				querying_condition3.append(String.valueOf(temp)+"' OR");
+				matching_order3.append(" subject LIKE '");
+				matching_order3.append(String.valueOf(temp)+"' OR");
 			}
 		}
-		querying_condition1.append(querying_condition3.substring(0, querying_condition3.length()-3)+");");
-		System.out.println(querying_condition1);
+		matching_order1.append(matching_order3.substring(0, matching_order3.length()-3)+");");
+		System.out.println(matching_order1);
 //------------------------------------------------------
 		Connection connect=null;
 		PreparedStatement Statement=null;
@@ -403,8 +413,7 @@ public class DbTools {
 		try
 		{
 		     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
-		     Statement=connect.prepareStatement(querying_condition1.toString());
-		     System.out.println(querying_condition1.toString());
+		     Statement=connect.prepareStatement(matching_order1.toString());
 		     rs =Statement.executeQuery();
 		     while(rs.next())
 		     {
@@ -485,5 +494,165 @@ public class DbTools {
 				result.append("_");
 		}
 		return result;
+	}
+	public static void Add_Message(String sender,String addressee,String date,String message)
+	{
+		StringBuffer adding_order1;
+		StringBuffer adding_order2;
+		Man m_sender;
+		Man m_addressee;
+		Man temp_man;
+		int unread;
+		temp_man=new Man(sender,2,null,2,null,null,null,null,0,0,0);
+		m_sender=Querry(temp_man).get(0);
+		temp_man=new Man(addressee,2,null,2,null,null,null,null,0,0,0);
+		m_addressee=Querry(temp_man).get(0);
+		unread=m_addressee.unread+1;
+		adding_order1=new StringBuffer();
+		adding_order1.append("insert into mes"+m_sender.MESID);
+		adding_order1.append(" values(?,?,?,?,?);");
+
+		adding_order2=new StringBuffer();
+		adding_order2.append("insert into mes"+m_addressee.MESID);
+		adding_order2.append(" values(?,?,?,?,?);");	
+
+		System.out.println(adding_order1);
+		System.out.println(adding_order2);
+
+		Connection connect=null;
+		PreparedStatement Statement1=null,Statement2=null,Statement3=null;
+		try 
+		{
+			Class.forName("com.mysql.jdbc.Driver");
+		         System.out.println("Success loading Mysql Driver1!");
+		}
+		catch (Exception e)
+		{
+		         System.out.print("Error loading Mysql Driver!");
+		         e.printStackTrace();
+	    }
+		try
+		{
+		     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
+		     Statement1=connect.prepareStatement(adding_order1.toString());
+		     Statement1.setLong(1,0);
+		     Statement1.setString(2,addressee);
+		     Statement1.setString(3,date);
+		     Statement1.setString(4,message);
+		     Statement1.setLong(5,2);
+		     Statement1.executeUpdate();
+		     
+		}
+		catch (SQLException e)
+		{
+            e.printStackTrace();
+        }
+		try
+		{
+		     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
+		     Statement2=connect.prepareStatement(adding_order2.toString());
+		     Statement2.setLong(1,1);
+		     Statement2.setString(2,sender);
+		     Statement2.setString(3,date);
+		     Statement2.setString(4,message);
+		     Statement2.setLong(5,0);
+		     Statement2.executeUpdate();
+		}
+		catch (SQLException e)
+		{
+            e.printStackTrace();
+        }
+		try
+		{
+		     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
+		     Statement3=connect.prepareStatement("update user set unread=? where username=?;");
+		     Statement3.setLong(1,unread);
+		     Statement3.setString(2,addressee);
+		     Statement3.executeUpdate();
+		     
+		}
+		catch (SQLException e)
+		{
+            e.printStackTrace();
+        }
+		finally
+        {
+            try
+            {
+                if(Statement3!=null)
+                {
+                    Statement3.close();
+                }
+                if(connect!=null)
+                {
+                    connect.close();
+                }
+            }
+            catch (SQLException e)
+            {
+                e.printStackTrace();
+            }
+        }
+	}
+	public static void Delete_Message(mes message,Man m)
+	{
+		StringBuffer deleting_order;
+		
+		deleting_order=new StringBuffer();
+		deleting_order.append("delete from msg"+m.MESID);
+		deleting_order.append(" where pos="+message.pos);
+		deleting_order.append(" and person='"+message.person);
+		deleting_order.append("' and DTA='"+message.DTA);
+		deleting_order.append("' and STR='"+message.STR);
+		deleting_order.append("';");
+		
+		System.out.println(deleting_order);
+
+		Connection connect=null;
+		PreparedStatement Statement=null;
+		ResultSet rs = null;
+		try 
+		{
+			Class.forName("com.mysql.jdbc.Driver");
+		         System.out.println("Success loading Mysql Driver1!");
+		}
+		catch (Exception e)
+		{
+		         System.out.print("Error loading Mysql Driver!");
+		         e.printStackTrace();
+	    }
+		try
+		{
+		     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
+		     Statement=connect.prepareStatement(deleting_order.toString());
+		     rs =Statement.executeQuery();
+		     
+		}
+		catch (SQLException e)
+		{
+            e.printStackTrace();
+        }
+		finally
+        {
+            try
+            {
+                if(rs!=null)
+                {
+                    rs.close();
+                }
+                if(Statement!=null)
+                {
+                    Statement.close();
+                }
+                if(connect!=null)
+                {
+                    connect.close();
+                }
+            }
+            catch (SQLException e)
+            {
+                e.printStackTrace();
+            }
+        }
 	}
 }

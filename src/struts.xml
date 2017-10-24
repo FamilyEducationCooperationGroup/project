@@ -16,6 +16,9 @@
         <action name="show" class="backport.Action_Show" method="show">
         	<result name="SUCCESS">sr.jsp</result>
         </action>
+        <action name="dialog" class="backport.Action_AddMessage" method="add_Message">
+        	<result name="SUCCESS">sendSucess.jsp</result>
+        </action>
     </package>
     
 </struts>

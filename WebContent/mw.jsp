@@ -8,13 +8,18 @@
 <title>家教管理系统</title>
 </head>
 <body>
+	<%
+    	String s=request.getParameter("username");
+    	session.setAttribute("obj1",s);
+    %>
 	<h1>欢迎<s:property value="username" /></h1>
-	<a href = "show.action?jb=1">
+	<a href = "show.action?jb=1&originuser=<s:property value="username" />">
 		家教公示
 	</a>
-	<a href = "show.action?jb=0">
+	<a href = "show.action?jb=0&originuser=<s:property value="username" />">
 		学生公示
 	</a>
+	<s:property value="unread" />
 	<s:form action="showtecahers">
 		<s:submit value="您的邮箱"/>
 	</s:form>
@@ -43,6 +48,7 @@
 				<td>电话</td>
 				<td>年级</td>
 				<td>科目</td>
+				<td>操作</td>
 			</tr>
 			<s:iterator value="result"> 
 		    <tr>
@@ -52,6 +58,9 @@
 		    	<td><s:property value="tel"/></td>
 		    	<td><s:property value="grade"/></td>
 		    	<td><s:property value="subject"/></td>
+		    	<td> 
+		    	<a  href="dialog.jsp?frm=<%= request.getParameter("username")%>&to=<s:property value="username" />">对话 </a>
+		    	 <td>
 			<tr></tr><br>
 			</s:iterator> 
 		</table>
