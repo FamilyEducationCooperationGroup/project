@@ -1,5 +1,14 @@
 package backport;
 public class mes {
+	public mes(int pos, String person, String dTA, String sTR, int readed, String brief) {
+		super();
+		this.pos = pos;
+		this.person = person;
+		DTA = dTA;
+		STR = sTR;
+		this.readed = readed;
+		this.brief = brief;
+	}
 	public int getPos() {
 		return pos;
 	}
@@ -9,14 +18,6 @@ public class mes {
 	public String getPerson() {
 		return person;
 	}
-	public mes(int pos, String person, String dTA, String sTR, int readed) {
-		super();
-		this.pos = pos;
-		this.person = person;
-		DTA = dTA;
-		STR = sTR;
-		this.readed = readed;
-	}
 	public void setPerson(String person) {
 		this.person = person;
 	}
@@ -25,7 +26,7 @@ public class mes {
 	String DTA;
 	String STR;
 	int readed;
-	
+	String brief;
 	
 	public String getDTA() {
 		return DTA;
@@ -44,5 +45,11 @@ public class mes {
 	}
 	public void setReaded(int readed) {
 		this.readed = readed;
+	}
+	public String getBrief() {
+		return brief;
+	}
+	public void setBrief(String brief) {
+		this.brief = brief;
 	}
 }

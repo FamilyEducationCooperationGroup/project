@@ -82,6 +82,8 @@ public class Action_Login extends ActionSupport {
 			return "FAILED";
 		}
 		result=convertResult(DbTools.Match(person));
+		MESID=person.MESID;
+		unread=person.unread;
 		return "SUCCESS";
 	}
 	public Man getPerson() {
@@ -155,5 +157,11 @@ public class Action_Login extends ActionSupport {
 	}
 	public void setResult(ArrayList<man_out> result) {
 		this.result = result;
+	}
+	public int getUnread() {
+		return unread;
+	}
+	public void setUnread(int unread) {
+		this.unread = unread;
 	}
 }

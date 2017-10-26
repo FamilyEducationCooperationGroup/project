@@ -13,19 +13,22 @@
     	session.setAttribute("obj1",s);
     %>
 	<h1>欢迎<s:property value="username" /></h1>
+	<h2>您有<s:property value="unread" />封邮件未读</h2>
 	<a href = "show.action?jb=1&originuser=<s:property value="username" />">
 		家教公示
 	</a>
 	<a href = "show.action?jb=0&originuser=<s:property value="username" />">
 		学生公示
 	</a>
-	<s:property value="unread" />
-	<s:form action="showtecahers">
-		<s:submit value="您的邮箱"/>
-	</s:form>
-	<s:form action="showtecahers">
-		<s:submit value="别人的评价"/>
-	</s:form>
+	<a href = "mailbox.action?MESID=<s:property value="MESID" />&originuser=<s:property value="username" />">
+		您的邮箱
+	</a>
+	<a href = "updatebox.jsp?originuser=<s:property value="username" />">
+		修改个人信息
+	</a>
+	<a href = "systempj.jsp?originuser=<s:property value="username" />">
+		系统评价
+	</a>
 	<h2>输入条件来查询您想找的人</h2>
 	<p>
 		<s:form action="search">

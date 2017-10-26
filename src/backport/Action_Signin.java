@@ -1,5 +1,7 @@
 package backport;
 import com.opensymphony.xwork2.ActionSupport;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 public class Action_Signin extends ActionSupport {
 	/**
 	 * 
@@ -39,9 +41,28 @@ public class Action_Signin extends ActionSupport {
 		person=new Man(username,job,name,sex,pwd,Fill_Grades(grades),Fill_Subjects(subjects),tel,MESID,PJID,unread);
 		Man temp;
 		temp=new Man(person.username,2,null,2,null,null,null,null,0,0,0);
-		if(person.username==null||person.pwd==null||(person.subject).equals("000000000")||(person.grade).equals("000000000000")){
-			return "FAILED1";
-		}else if(DbTools.Querry(temp)!=null){
+		Pattern pattern = Pattern.compile("[0-9]*");
+        Matcher isNum = pattern.matcher(tel);
+		if(username==null){
+			return "FAILED1";//未输入用户名
+		}
+		else if (pwd==null)
+		{
+			return "FAILED2";//未输入密码
+		}
+		else if ((person.subject).equals("000000000"))
+		{
+			return "FAILED3";//未选择科目
+		}
+		else if ((person.grade).equals("000000000000"))
+		{
+			return "FAILED4";//未选择年级
+		}
+		else if (!isNum.matches()||tel.length()>11)
+		{
+			return "FAILED5";//电话号格式出错
+		}
+		else if(DbTools.Querry(temp)!=null){
 			temp=new Man(person.username,person.job,person.name,person.sex,person.pwd,person.grade,person.subject,person.tel,0,0,0);
 			DbTools.Add(temp);
 			return "SUCCESS";

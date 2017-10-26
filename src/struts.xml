@@ -19,6 +19,21 @@
         <action name="dialog" class="backport.Action_AddMessage" method="add_Message">
         	<result name="SUCCESS">sendSucess.jsp</result>
         </action>
+        <action name="mailbox" class="backport.Action_ShowMails" method="Show_Mails">
+        	<result name="SUCCESS">mailbox.jsp</result>
+        </action>
+        <action name="inf" class="backport.Action_inf" method="inf">
+        	<result name="SUCCESS">inf.jsp</result>
+        </action>
+        <action name="del" class="backport.Action_del" method="del">
+        	<result name="SUCCESS">deleteSucess.jsp</result>
+        </action>
+        <action name="update" class="backport.Action_Update" method="update">
+        	<result name="SUCCESS">fm.jsp</result>
+        </action>
+        <action name="Systempj" class="backport.Action_Syspj" method="Syspj">
+        	<result name="success">sendSucess.jsp</result>
+        </action>
     </package>
     
 </struts>
