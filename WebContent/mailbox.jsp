@@ -28,6 +28,63 @@
 			<tr></tr><br>
 			</s:iterator> 
 		</table>
+	<h1>等您请求</h1>
+			<table border="1">
+			<tr>
+				<td>发件人</td>
+				<td>时间</td>
+				<td>简报</td>
+				<td>同意</td>
+			</tr>
+			<s:iterator value="ans_wait"> 
+		    <tr>
+		    	<td><s:property value="frm" /></td> 
+		    	<td><s:property value="DTA" /></td>
+		    	<td><s:property value="mes" /></td>
+		    	<td> 
+		    	<a  href="allow?frm=<s:property value="frm"/>&originuser=<s:property value="originuser"/>&DTA=<s:property value="DTA" />">
+		    	同意
+		    	</a>
+		    	 <td>
+			<tr></tr><br>
+			</s:iterator> 
+		</table>
+	<h1>您最新的已经通过的请求</h1>
+			<table border="1">
+			<tr>
+				<td>同意人</td>
+				<td>时间</td>
+				<td>简报</td>
+				<td>确认</td>
+			</tr>
+			<s:iterator value="ans_requested"> 
+		    <tr>
+		    	<td><s:property value="frm" /></td> 
+		    	<td><s:property value="DTA" /></td>
+		    	<td><s:property value="mes" /></td>
+		    	<td> 
+		    	<a  href="confirm?originuser=<s:property value="originuser"/>&frm=<s:property value="frm" />&DTA=<s:property value="DTA" />">
+		    		确认
+		    	</a>
+		    	 <td>
+			<tr></tr><br>
+			</s:iterator> 
+		</table>
+	<h1>您还未通过的请求</h1>
+			<table border="1">
+			<tr>
+				<td>对方</td>
+				<td>时间</td>
+				<td>简报</td>
+			</tr>
+			<s:iterator value="request_wait"> 
+		    <tr>
+		    	<td><s:property value="frm" /></td> 
+		    	<td><s:property value="DTA" /></td>
+		    	<td><s:property value="mes" /></td>
+			<tr></tr><br>
+			</s:iterator> 
+		</table>
 	<h1>已读信息</h1>
 	<table border="1">
 			<tr>

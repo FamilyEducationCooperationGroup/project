@@ -34,6 +34,15 @@
         <action name="Systempj" class="backport.Action_Syspj" method="Syspj">
         	<result name="success">sendSucess.jsp</result>
         </action>
+        <action name="requestmatch" class="backport.Action_AddRequest" method="AddRequest">
+        	<result name="SUCCESS">sendSucess.jsp</result>
+        </action>
+        <action name="allow" class="backport.Action_Allow" method="Allow">
+        	<result name="SUCCESS">sendSucess.jsp</result>
+        </action>
+        <action name="confirm" class="backport.Action_Confirm" method="Confirm">
+        	<result name="SUCCESS">sendSucess.jsp</result>
+        </action>
     </package>
     
 </struts>

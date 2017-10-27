@@ -26,6 +26,9 @@
 	<a href = "updatebox.jsp?originuser=<s:property value="username" />">
 		修改个人信息
 	</a>
+	<a href = "personbox?MESID=<s:property value="MESID" />&originuser=<s:property value="username" />">
+		联系人
+	</a>
 	<a href = "systempj.jsp?originuser=<s:property value="username" />">
 		系统评价
 	</a>
@@ -51,7 +54,8 @@
 				<td>电话</td>
 				<td>年级</td>
 				<td>科目</td>
-				<td>操作</td>
+				<td>对话</td>
+				<td>申请匹配</td>
 			</tr>
 			<s:iterator value="result"> 
 		    <tr>
@@ -63,7 +67,10 @@
 		    	<td><s:property value="subject"/></td>
 		    	<td> 
 		    	<a  href="dialog.jsp?frm=<%= request.getParameter("username")%>&to=<s:property value="username" />">对话 </a>
-		    	 <td>
+		    	 </td>
+		    	 <td> 
+		    	<a  href="request_match.jsp?frm=<%= request.getParameter("username")%>&to=<s:property value="username" />">申请 </a>
+		    	 </tr>
 			<tr></tr><br>
 			</s:iterator> 
 		</table>

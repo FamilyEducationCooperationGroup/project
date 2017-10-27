@@ -15,7 +15,7 @@ public class Action_inf extends ActionSupport {
 	public String inf() {
 		if(refesh==1)
 		{
-		DbTools.Rsfresh_unread(originuser);
+		DbTools.Rsfresh_unread(originuser,-1);
 		}
 		STR=DbTools.Querry_Information(MESID,person,DTA,refesh).STR;
 		return "SUCCESS";

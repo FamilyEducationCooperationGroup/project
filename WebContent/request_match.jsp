@@ -3,7 +3,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
     <head>
-        <title>对话</title>
+        <title>申请</title>
     </head>
     <body>
     	
@@ -14,8 +14,8 @@
     	session.setAttribute("obj2",t);
     	%>
     	
-        <s:form action="dialog.action">
-    	<s:textarea label="请输入内容" name="message" cols="40" rows="10"/>
+        <s:form action="requestmatch.action">
+    	<s:textarea label="请输入简要说明（不多于20词）" name="match_mes" cols="40" rows="10"/>
             <s:submit value="发送" />
      </s:form>
     </body>
