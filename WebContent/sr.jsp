@@ -17,7 +17,8 @@
 				<td>电话</td>
 				<td>年级</td>
 				<td>科目</td>
-				<td>操作</td>
+				<td>发消息</td>
+				<td>申请匹配</td>
 			</tr>
 			<s:iterator value="result"> 
 		    <tr>
@@ -27,7 +28,8 @@
 		    	<td><s:property value="tel"/></td>
 		    	<td><s:property value="grade"/></td>
 		    	<td><s:property value="subject"/></td>
-		    	<td><a  href="dialog.jsp?frm=<s:property value="originuser" />&to=<s:property value="username" />">对话 </a></td>
+		    	<td><a  href="dialog.jsp?frm=<s:property value="originuser" />&to=<s:property value="username" />">发消息</a></td>
+		    	<td><a  href="request_match.jsp?frm=<s:property value="originuser" />&to=<s:property value="username" />">申请匹配 </a></td>
 			<tr></tr><br>
 			</s:iterator> 
 		</table>

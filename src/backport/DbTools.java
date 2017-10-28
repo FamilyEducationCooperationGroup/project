@@ -1153,5 +1153,41 @@ public class DbTools {
 		}
 		return false;
 	}
+	public static void Delete_pj(String originuser, String frm) {
+		Connection connect=null;
+		PreparedStatement Statement=null;
+		Man tempman=new Man(originuser,2,null,2,null,null,null,null,0,0,0);
+		int PJID=Querry(tempman).get(0).PJID;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+		         System.out.println("Success loading Mysql Driver1!");
+		    }
+		catch (Exception e) {
+		         System.out.print("Error loading Mysql Driver!");
+		         e.printStackTrace();
+		    }
+		try {
+		     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
+		     Statement=connect.prepareStatement("delete from pj"+PJID+" where frm=?");
+		     Statement.setString(1,frm);
+		     Statement.executeUpdate();
+		     }catch (SQLException e) {
+	            e.printStackTrace();
+	        }finally
+	        {
+	            try {
+	                if(Statement!=null)
+	                {
+	                    Statement.close();
+	                }
+	                if(connect!=null)
+	                {
+	                    connect.close();
+	                }
+	            } catch (SQLException e) {
+	                e.printStackTrace();
+	            }
+	        }
+	}
 	
 }

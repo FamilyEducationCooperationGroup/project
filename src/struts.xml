@@ -43,6 +43,12 @@
         <action name="confirm" class="backport.Action_Confirm" method="Confirm">
         	<result name="SUCCESS">sendSucess.jsp</result>
         </action>
+        <action name="personbox" class="backport.Action_ShowPerson" method="ShowPerson">
+        	<result name="SUCCESS">personbox.jsp</result>
+        </action>
+        <action name="deletepj" class="backport.Action_DeletePj" method="DeletePj">
+        	<result name="SUCCESS">deleteSucess.jsp</result>
+        </action>
     </package>
     
 </struts>

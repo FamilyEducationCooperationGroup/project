@@ -54,7 +54,7 @@
 				<td>电话</td>
 				<td>年级</td>
 				<td>科目</td>
-				<td>对话</td>
+				<td>发消息</td>
 				<td>申请匹配</td>
 			</tr>
 			<s:iterator value="result"> 
@@ -66,10 +66,10 @@
 		    	<td><s:property value="grade"/></td>
 		    	<td><s:property value="subject"/></td>
 		    	<td> 
-		    	<a  href="dialog.jsp?frm=<%= request.getParameter("username")%>&to=<s:property value="username" />">对话 </a>
+		    	<a  href="dialog.jsp?frm=<%= request.getParameter("username")%>&to=<s:property value="username" />">发消息 </a>
 		    	 </td>
 		    	 <td> 
-		    	<a  href="request_match.jsp?frm=<%= request.getParameter("username")%>&to=<s:property value="username" />">申请 </a>
+		    	<a  href="request_match.jsp?frm=<%= request.getParameter("username")%>&to=<s:property value="username" />">申请匹配 </a>
 		    	 </tr>
 			<tr></tr><br>
 			</s:iterator> 

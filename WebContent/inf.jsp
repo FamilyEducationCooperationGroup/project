@@ -17,7 +17,7 @@
 	删除
 	</a>
 	<a  href="dialog.jsp?frm=<s:property value="originuser"/>&to=<s:property value="person"/>">
-	对话
+	发消息
 	</a>
 </body>
 </html>
