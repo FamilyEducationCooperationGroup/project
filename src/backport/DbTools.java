@@ -12,6 +12,7 @@ public class DbTools {
 	ResultSet rs = null;
 	String MES="MES";
 	String PJ="PJ";
+	String JD="JD";
 	try {
 		Class.forName("com.mysql.jdbc.Driver");
 	         System.out.println("Success loading Mysql Driver1!");
@@ -113,9 +114,10 @@ public class DbTools {
        }
 	MES+=String.valueOf(m.MESID);
 	PJ+=String.valueOf(m.PJID);
-	CreateTable(MES,PJ);
+	JD+=String.valueOf(m.PJID);
+	CreateTable(MES,PJ,JD);
 	 }
-	private static void CreateTable(String mES,String pJ) {
+	private static void CreateTable(String mES,String pJ,String JD) {
 		Connection connect=null;
 		PreparedStatement Statement=null;
 		
@@ -146,6 +148,17 @@ public class DbTools {
 			connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=false","root","1234");
 			Statement=connect.prepareStatement("create table  " + pJ +" (frm varchar(20),mes varchar(40),DTA varchar(20),proc int,star int,judgement varchar(2000));");
 			//System.out.println("create table  " + pJ +" (DTA varchar(20),STR varchar(2000),star int)");
+			Statement.executeUpdate();
+		}
+		catch (SQLException e)
+		{
+            e.printStackTrace();
+	    }
+		try
+		{
+			connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=false","root","1234");
+			Statement=connect.prepareStatement("create table  " + JD +" (frm varchar(20),DTA varchar(20),STR varchar(2000),star int,pos int);");
+			//System.out.println("create table  " + JD +" (frm varchar(20),DTA varchar(20),STR varchar(2000),star int,pos int);");
 			Statement.executeUpdate();
 		}
 		catch (SQLException e)
@@ -449,17 +462,11 @@ public class DbTools {
             try
             {
                 if(rs!=null)
-                {
                     rs.close();
-                }
                 if(Statement!=null)
-                {
                     Statement.close();
-                }
                 if(connect!=null)
-                {
                     connect.close();
-                }
             }
             catch (SQLException e)
             {
@@ -505,8 +512,6 @@ public class DbTools {
 	}
 	public static void Add_Message(String sender,String addressee,String date,String message)
 	{
-		StringBuffer adding_order1;
-		StringBuffer adding_order2;
 		StringBuffer short_message;
 		String temp;
 		Man m_sender;
@@ -525,20 +530,8 @@ public class DbTools {
 			temp=short_message.substring(0,M);
 		else
 			temp=short_message.toString();
-		
-		adding_order1=new StringBuffer();
-		adding_order1.append("insert into mes"+m_sender.MESID);
-		adding_order1.append(" values(?,?,?,?,?,?);");
-
-		adding_order2=new StringBuffer();
-		adding_order2.append("insert into mes"+m_addressee.MESID);
-		adding_order2.append(" values(?,?,?,?,?,?);");	
-
-		System.out.println(adding_order1);
-		System.out.println(adding_order2);
-
 		Connection connect=null;
-		PreparedStatement Statement1=null,Statement2=null,Statement3=null;
+		PreparedStatement Statement=null;
 		try 
 		{
 			Class.forName("com.mysql.jdbc.Driver");
@@ -552,14 +545,14 @@ public class DbTools {
 		try
 		{
 		     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
-		     Statement1=connect.prepareStatement(adding_order1.toString());
-		     Statement1.setLong(1,0);
-		     Statement1.setString(2,addressee);
-		     Statement1.setString(3,date);
-		     Statement1.setString(4,message);
-		     Statement1.setString(5,temp);
-		     Statement1.setLong(6,2);
-		     Statement1.executeUpdate();
+		     Statement=connect.prepareStatement("insert into mes"+m_sender.MESID+" values(?,?,?,?,?,?);");
+		     Statement.setLong(1,0);
+		     Statement.setString(2,addressee);
+		     Statement.setString(3,date);
+		     Statement.setString(4,message);
+		     Statement.setString(5,temp);
+		     Statement.setLong(6,2);
+		     Statement.executeUpdate();
 		     
 		}
 		catch (SQLException e)
@@ -569,14 +562,14 @@ public class DbTools {
 		try
 		{
 		     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
-		     Statement2=connect.prepareStatement(adding_order2.toString());
-		     Statement2.setLong(1,1);
-		     Statement2.setString(2,sender);
-		     Statement2.setString(3,date);
-		     Statement2.setString(4,message);
-		     Statement2.setString(5,temp);
-		     Statement2.setLong(6,0);
-		     Statement2.executeUpdate();
+		     Statement=connect.prepareStatement("insert into mes"+m_addressee.MESID+" values(?,?,?,?,?,?);");
+		     Statement.setLong(1,1);
+		     Statement.setString(2,sender);
+		     Statement.setString(3,date);
+		     Statement.setString(4,message);
+		     Statement.setString(5,temp);
+		     Statement.setLong(6,0);
+		     Statement.executeUpdate();
 		}
 		catch (SQLException e)
 		{
@@ -585,10 +578,10 @@ public class DbTools {
 		try
 		{
 		     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
-		     Statement3=connect.prepareStatement("update user set unread=? where username=?;");
-		     Statement3.setLong(1,unread);
-		     Statement3.setString(2,addressee);
-		     Statement3.executeUpdate();
+		     Statement=connect.prepareStatement("update user set unread=? where username=?;");
+		     Statement.setLong(1,unread);
+		     Statement.setString(2,addressee);
+		     Statement.executeUpdate();
 		     
 		}
 		catch (SQLException e)
@@ -599,48 +592,19 @@ public class DbTools {
         {
             try
             {
-                if(Statement1!=null)
-                {
-                    Statement1.close();
-                }
-                if(Statement2!=null)
-                {
-                    Statement2.close();
-                }
-                if(Statement3!=null)
-                {
-                    Statement3.close();
-                }
+                if(Statement!=null)
+                    Statement.close();
                 if(connect!=null)
-                {
                     connect.close();
-                }
             }
             catch (SQLException e)
             {
                 e.printStackTrace();
             }
         }
-		/*
-   	 if(STR.length()<=M)
-   	 {
-   		 System.arraycopy(STR,0,brief,0,STR.length()); 
-   	 }
-   	 else
-   	 {
-   		 System.arraycopy(STR,0,brief,0,M-1);
-   	 }
-   	 */
 	}
 	public static void Delete_Message(int MESID,String frm,String date)
 	{
-		StringBuffer deleting_order;
-		deleting_order=new StringBuffer();
-		deleting_order.append("delete from mes"+MESID);
-		deleting_order.append(" where frm=? and DTA=?;");
-		
-		System.out.println(deleting_order);
-
 		Connection connect=null;
 		PreparedStatement Statement=null;
 		try 
@@ -656,11 +620,10 @@ public class DbTools {
 		try
 		{
 			connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
-		    Statement=connect.prepareStatement(deleting_order.toString());
+		    Statement=connect.prepareStatement("delete from mes"+MESID+" where frm=? and DTA=?;");
 		    Statement.setString(1,frm);
 		    Statement.setString(2,date);
 		    Statement.executeUpdate();
-		     
 		}
 		catch (SQLException e)
 		{
@@ -671,13 +634,9 @@ public class DbTools {
             try
             {
                 if(Statement!=null)
-                {
                     Statement.close();
-                }
                 if(connect!=null)
-                {
                     connect.close();
-                }
             }
             catch (SQLException e)
             {
@@ -701,7 +660,7 @@ public class DbTools {
 		
 		result=null;
 		Connection connect=null;
-		PreparedStatement Statement1=null,Statement2=null;
+		PreparedStatement Statement=null;
 		ResultSet rs = null;
 		try 
 		{
@@ -716,8 +675,8 @@ public class DbTools {
 		try
 		{
 		     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
-		     Statement1=connect.prepareStatement(querrying_order.toString());
-		     rs =Statement1.executeQuery();
+		     Statement=connect.prepareStatement(querrying_order.toString());
+		     rs =Statement.executeQuery();
 		     while(rs.next())
 		     {
 		    	 result=new mes(rs.getInt("pos"),rs.getString("frm"),rs.getString("DTA"),rs.getString("STR"),rs.getInt("readed"),rs.getString("BR"));
@@ -733,10 +692,10 @@ public class DbTools {
 		     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
 		     if (refesh==1)
 			 {
-			     Statement2=connect.prepareStatement(refesh_order.toString());
-			     Statement2.setString(1,person);
-			     Statement2.setString(2,date);
-			     Statement2.executeUpdate();
+			     Statement=connect.prepareStatement(refesh_order.toString());
+			     Statement.setString(1,person);
+			     Statement.setString(2,date);
+			     Statement.executeUpdate();
 			 }
 		}
 		catch (SQLException e)
@@ -748,21 +707,11 @@ public class DbTools {
             try
             {
                 if(rs!=null)
-                {
                     rs.close();
-                }
-                if(Statement1!=null)
-                {
-                    Statement1.close();
-                }
-                if(Statement2!=null)
-                {
-                    Statement2.close();
-                }
+                if(Statement!=null)
+                    Statement.close();
                 if(connect!=null)
-                {
                     connect.close();
-                }
             }
             catch (SQLException e)
             {
@@ -774,20 +723,8 @@ public class DbTools {
 	}
 	public static void Update_Information(Man update)
 	{
-		StringBuffer update_order1;
-		StringBuffer update_order2;
-		StringBuffer update_order3;
-		StringBuffer update_order4;
-		update_order1=new StringBuffer();
-		update_order1.append("update user set grade=? where username=?;");
-		update_order2=new StringBuffer();
-		update_order2.append("update user set subject=? where username=?;");
-		update_order3=new StringBuffer();
-		update_order3.append("update user set tel=? where username=?;");
-		update_order4=new StringBuffer();
-		update_order4.append("update user set pwd=? where username=?;");
 		Connection connect=null;
-		PreparedStatement Statement1=null,Statement2=null,Statement3=null,Statement4=null;
+		PreparedStatement Statement=null;
 		try
 		{
 			 Class.forName("com.mysql.jdbc.Driver");
@@ -803,10 +740,10 @@ public class DbTools {
 			if(!update.grade.equals("000000000000"))
 			{
 		     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
-		     Statement1=connect.prepareStatement(update_order1.toString());
-		     Statement1.setString(1, update.grade);
-		     Statement1.setString(2, update.username);
-		     Statement1.executeUpdate();
+		     Statement=connect.prepareStatement("update user set grade=? where username=?;");
+		     Statement.setString(1, update.grade);
+		     Statement.setString(2, update.username);
+		     Statement.executeUpdate();
 			}
 		}
 		catch (SQLException e)
@@ -817,10 +754,10 @@ public class DbTools {
 		{
 			if(!update.subject.equals("000000000")) {
 		     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
-		     Statement2=connect.prepareStatement(update_order2.toString());
-		     Statement2.setString(1, update.subject);
-		     Statement2.setString(2, update.username);
-		     Statement2.executeUpdate();
+		     Statement=connect.prepareStatement("update user set subject=? where username=?;");
+		     Statement.setString(1, update.subject);
+		     Statement.setString(2, update.username);
+		     Statement.executeUpdate();
 			}
 		}
 		catch (SQLException e)
@@ -832,10 +769,10 @@ public class DbTools {
 		     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
 		     if (!update.tel.equals(""))
 		     {
-		    	 Statement3=connect.prepareStatement(update_order3.toString());
-		    	 Statement3.setString(1, update.tel);
-			     Statement3.setString(2, update.username);
-			     Statement3.executeUpdate();
+		    	 Statement=connect.prepareStatement("update user set tel=? where username=?;");
+		    	 Statement.setString(1, update.tel);
+			     Statement.setString(2, update.username);
+			     Statement.executeUpdate();
 		     }
 		}catch (SQLException e)
 		{
@@ -846,10 +783,10 @@ public class DbTools {
 		     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
 		     if (!update.pwd.equals(""))
 		     {
-		    	 Statement4=connect.prepareStatement(update_order4.toString());
-		    	 Statement4.setString(1, update.pwd);
-			     Statement4.setString(2, update.username);
-			     Statement4.executeUpdate();
+		    	 Statement=connect.prepareStatement("update user set pwd=? where username=?;");
+		    	 Statement.setString(1, update.pwd);
+			     Statement.setString(2, update.username);
+			     Statement.executeUpdate();
 		     }
 		}
 		catch (SQLException e)
@@ -859,26 +796,10 @@ public class DbTools {
 		finally
         {
             try {
-                if(Statement1!=null)
-                {
-                    Statement1.close();
-                }
-                if(Statement2!=null)
-                {
-                    Statement2.close();
-                }
-                if(Statement3!=null)
-                {
-                    Statement3.close();
-                }
-                if(Statement4!=null)
-                {
-                    Statement4.close();
-                }
+                if(Statement!=null)
+                    Statement.close();
                 if(connect!=null)
-                {
                     connect.close();
-                }
             } catch (SQLException e)
             {
                 e.printStackTrace();
@@ -913,13 +834,9 @@ public class DbTools {
 	        {
 	            try {
 	                if(Statement!=null)
-	                {
 	                    Statement.close();
-	                }
 	                if(connect!=null)
-	                {
 	                    connect.close();
-	                }
 	            } catch (SQLException e) {
 	                e.printStackTrace();
 	            }
@@ -950,13 +867,9 @@ public class DbTools {
 	        {
 	            try {
 	                if(Statement!=null)
-	                {
 	                    Statement.close();
-	                }
 	                if(connect!=null)
-	                {
 	                    connect.close();
-	                }
 	            } catch (SQLException e) {
 	                e.printStackTrace();
 	            }
@@ -991,13 +904,9 @@ public class DbTools {
 	        {
 	            try {
 	                if(Statement!=null)
-	                {
 	                    Statement.close();
-	                }
 	                if(connect!=null)
-	                {
 	                    connect.close();
-	                }
 	            } catch (SQLException e) {
 	                e.printStackTrace();
 	            }
@@ -1044,17 +953,11 @@ public class DbTools {
 	        {
 	            try {
 	                if(rs!=null)
-	                {
 	                    rs.close();
-	                }
 	                if(Statement!=null)
-	                {
 	                    Statement.close();
-	                }
 	                if(connect!=null)
-	                {
 	                    connect.close();
-	                }
 	            } catch (SQLException e) {
 	                e.printStackTrace();
 	            }
@@ -1094,13 +997,9 @@ public class DbTools {
 	        {
 	            try {
 	                if(Statement!=null)
-	                {
 	                    Statement.close();
-	                }
 	                if(connect!=null)
-	                {
 	                    connect.close();
-	                }
 	            } catch (SQLException e) {
 	                e.printStackTrace();
 	            }
@@ -1136,21 +1035,15 @@ public class DbTools {
 	        {
 	            try {
 	                if(Statement!=null)
-	                {
 	                    Statement.close();
-	                }
 	                if(connect!=null)
-	                {
 	                    connect.close();
-	                }
 	            } catch (SQLException e) {
 	                e.printStackTrace();
 	            }
 	        }
 		if(flag==1)
-		{
 			return true;
-		}
 		return false;
 	}
 	public static void Delete_pj(String originuser, String frm) {
@@ -1177,17 +1070,256 @@ public class DbTools {
 	        {
 	            try {
 	                if(Statement!=null)
-	                {
 	                    Statement.close();
-	                }
 	                if(connect!=null)
-	                {
 	                    connect.close();
-	                }
 	            } catch (SQLException e) {
 	                e.printStackTrace();
 	            }
 	        }
 	}
-	
+	public static ArrayList<Ass> Querry_Assess(String frm,String others,int pos)
+	{
+		ArrayList<Ass> result = new ArrayList<Ass>();
+		StringBuffer querrying_order;
+		Man temp_man,m_frm;
+		temp_man=new Man(frm,2,null,2,null,null,null,null,0,0,0);
+		m_frm=Querry(temp_man).get(0);
+		querrying_order=new StringBuffer();
+		querrying_order.append("SELECT * from JD"+m_frm.PJID);
+		querrying_order.append(" where pos="+pos);
+		if (others!=null && !others.equals(""))
+		{
+			querrying_order.append(" and frm='"+others);
+			querrying_order.append("';");
+		}
+		else
+			querrying_order.append(";");
+		Connection connect=null;
+		PreparedStatement Statement=null;
+		ResultSet rs = null;
+		try 
+		{
+			Class.forName("com.mysql.jdbc.Driver");
+		         System.out.println("Success loading Mysql Driver1!");
+		}
+		catch (Exception e)
+		{
+		         System.out.print("Error loading Mysql Driver!");
+		         e.printStackTrace();
+	    }
+		try
+		{
+		     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
+		     Statement=connect.prepareStatement(querrying_order.toString());
+		     rs =Statement.executeQuery();
+		     while(rs.next())
+		     {
+		    	 String person=rs.getString("frm");
+		    	 String DTA=rs.getString("DTA");
+				 String STR=rs.getString("STR");
+				 int star=rs.getInt("star");
+				 Ass m0=new Ass(person,DTA,STR,star,pos);
+				 result.add(m0);
+		     }
+		}
+		catch (SQLException e)
+		{
+            e.printStackTrace();
+        }
+		finally
+        {
+            try
+            {
+                if(rs!=null)
+                    rs.close();
+                if(Statement!=null)
+                    Statement.close();
+                if(connect!=null)
+                    connect.close();
+            }
+            catch (SQLException e)
+            {
+                e.printStackTrace();
+            }
+        }
+		return result;
+	}
+	public static String Add_Update_Assess(String frm,Ass assess)
+	{
+		ArrayList<Ass> tmp;
+		Man m_frm,m_others,temp_man;
+		temp_man=new Man(frm,2,null,2,null,null,null,null,0,0,0);
+		m_frm=Querry(temp_man).get(0);
+		temp_man=new Man(assess.frm,2,null,2,null,null,null,null,0,0,0);
+		m_others=Querry(temp_man).get(0);
+		tmp=Querry_Assess(frm,assess.frm,assess.pos);
+		
+		Connection connect=null;
+		PreparedStatement Statement=null;
+		try 
+		{
+			Class.forName("com.mysql.jdbc.Driver");
+		    System.out.println("Success loading Mysql Driver1!");
+		}
+		catch (Exception e)
+		{
+			System.out.print("Error loading Mysql Driver!");
+		    e.printStackTrace();
+	    }
+		if (tmp.size()!=0)
+		{
+			try
+			{
+			    connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
+			    Statement=connect.prepareStatement("update JD"+m_frm.PJID+" set DTA=?,STR=?,star=? where frm=? AND pos=?;");
+			    Statement.setString(1,assess.DTA);
+			    Statement.setString(2,assess.STR);
+			    Statement.setLong(3,assess.star);
+			    Statement.setString(4,assess.frm);
+			    Statement.setLong(5,1);
+			    Statement.executeUpdate();
+			}
+			catch (SQLException e)
+			{
+	            e.printStackTrace();
+	        }
+			try
+			{
+			    connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
+			    Statement=connect.prepareStatement("update JD"+m_others.PJID+" set DTA=?,STR=?,star=? where frm=? AND pos=?;");
+			    Statement.setString(1,assess.DTA);
+			    Statement.setString(2,assess.STR);
+			    Statement.setLong(3,assess.star);
+			    Statement.setString(4,frm);
+			    Statement.setLong(5,0);
+			    Statement.executeUpdate();
+			}
+			catch (SQLException e)
+			{
+	            e.printStackTrace();
+	        }
+			finally
+	        {
+	            try
+	            {
+	                if(Statement!=null)
+	                    Statement.close();
+	                if(connect!=null)
+	                    connect.close();
+	            }
+	            catch (SQLException e)
+	            {
+	                e.printStackTrace();
+	            }
+	        }
+		}
+		else
+		{
+			try
+			{
+			    connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
+			    Statement=connect.prepareStatement("insert into JD"+m_frm.PJID+" values(?,?,?,?,?);");
+			    Statement.setString(1,assess.frm);
+			    Statement.setString(2,assess.DTA);
+			    Statement.setString(3,assess.STR);
+			    Statement.setLong(4,assess.star);
+			    Statement.setLong(5,1);
+			    Statement.executeUpdate();
+			}
+			catch (SQLException e)
+			{
+	            e.printStackTrace();
+	        }
+			try
+			{
+			    connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
+			    Statement=connect.prepareStatement("insert into JD"+m_others.PJID+" values(?,?,?,?,?);");
+			    Statement.setString(1,frm);
+			    Statement.setString(2,assess.DTA);
+			    Statement.setString(3,assess.STR);
+			    Statement.setLong(4,assess.star);
+			    Statement.setLong(5,0);
+			    Statement.executeUpdate();
+			}
+			catch (SQLException e)
+			{
+	            e.printStackTrace();
+	        }
+			finally
+	        {
+	            try
+	            {
+	                if(Statement!=null)
+	                    Statement.close();
+	                if(connect!=null)
+	                    connect.close();
+	            }
+	            catch (SQLException e)
+	            {
+	                e.printStackTrace();
+	            }
+	        }
+		}
+		return "SUCCESS";
+	}
+	public static String Delete_Assess(String frm,String others)
+	{
+		Man m_frm, m_others, temp_man;
+		temp_man=new Man(frm,2,null,2,null,null,null,null,0,0,0);
+		m_frm=Querry(temp_man).get(0);
+		temp_man=new Man(others,2,null,2,null,null,null,null,0,0,0);
+		m_others=Querry(temp_man).get(0);
+		Connection connect=null;
+		PreparedStatement Statement=null;
+		try 
+		{
+			Class.forName("com.mysql.jdbc.Driver");
+			System.out.println("Success loading Mysql Driver1!");
+		}
+		catch (Exception e)
+		{
+		    System.out.print("Error loading Mysql Driver!");
+		    e.printStackTrace();
+	    }
+		try
+		{
+			connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
+		    Statement=connect.prepareStatement("delete from JD"+m_frm.PJID+" where pos=? and frm=?;");
+		    Statement.setLong(1,1);
+		    Statement.setString(2,others);
+		    Statement.executeUpdate();
+		}
+		catch (SQLException e)
+		{
+            e.printStackTrace();
+        }
+		try
+		{
+			connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
+		    Statement=connect.prepareStatement("delete from JD"+m_others.PJID+" where pos=? and frm=?;");
+		    Statement.setLong(1,0);
+		    Statement.setString(2,frm);
+		    Statement.executeUpdate();
+		}
+		catch (SQLException e)
+		{
+            e.printStackTrace();
+        }
+		finally
+        {
+            try
+            {
+                if(Statement!=null)
+                    Statement.close();
+                if(connect!=null)
+                    connect.close();
+            }
+            catch (SQLException e)
+            {
+                e.printStackTrace();
+            }
+        }
+		return "SUCCESS";
+	}
 }

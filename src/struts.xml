@@ -49,6 +49,18 @@
         <action name="deletepj" class="backport.Action_DeletePj" method="DeletePj">
         	<result name="SUCCESS">deleteSucess.jsp</result>
         </action>
+        <action name="addjudge" class="backport.Action_AddJudge" method="AddJudge">
+        	<result name="SUCCESS">sendSucess.jsp</result>
+        </action>
+        <action name="jdboxm" class="backport.Action_Jdboxm" method="Jdbox">
+        	<result name="SUCCESS">jdboxm.jsp</result>
+        </action>
+        <action name="deljd" class="backport.Action_DelJd" method="DelJd">
+        	<result name="SUCCESS">deleteSucess.jsp</result>
+        </action>
+        <action name="jdboxy" class="backport.Action_JdBoxy" method="JdBoxy">
+        	<result name="SUCCESS">jdboxy.jsp</result>
+        </action>
     </package>
     
 </struts>

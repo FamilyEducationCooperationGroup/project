@@ -29,6 +29,10 @@
 	<a href = "personbox?MESID=<s:property value="MESID" />&originuser=<s:property value="username" />">
 		联系人
 	</a>
+	<a href = "jdboxm?originuser=<s:property value="username" />">
+		您的评价记录
+	</a>
+	<a  href="jdboxy?to=<s:property value="username" />">别人对您的评价</a>
 	<a href = "systempj.jsp?originuser=<s:property value="username" />">
 		系统评价
 	</a>
@@ -54,6 +58,7 @@
 				<td>电话</td>
 				<td>年级</td>
 				<td>科目</td>
+				<td>他的评价</td>
 				<td>发消息</td>
 				<td>申请匹配</td>
 			</tr>
@@ -65,6 +70,9 @@
 		    	<td><s:property value="tel"/></td>
 		    	<td><s:property value="grade"/></td>
 		    	<td><s:property value="subject"/></td>
+		    	<td> 
+		    	<a  href="jdboxy?to=<s:property value="username" />">他的评价</a>
+		    	 </td>
 		    	<td> 
 		    	<a  href="dialog.jsp?frm=<%= request.getParameter("username")%>&to=<s:property value="username" />">发消息 </a>
 		    	 </td>

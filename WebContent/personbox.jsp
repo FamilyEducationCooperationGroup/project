@@ -18,7 +18,7 @@
 			<s:iterator value="personlist"> 
 		    <tr>
 		    	<td><s:property value="frm" /></td> 
-		    	<td><a  href="judge.jsp?frm=<s:property value="originuser" />">评价 </a></td>
+		    	<td><a  href="judge.jsp?frm=<s:property value="originuser" />&to=<s:property value="frm" />">评价 </a></td>
 		    	<td><a  href="deletepj?originuser=<s:property value="originuser" />&frm=<s:property value="frm" />">删除 </a></td>
 		    	<td><a  href="dialog.jsp?frm=<s:property value="originuser" />&to=<s:property value="frm" />">对话 </a></td>
 			<tr></tr><br>
