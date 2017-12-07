@@ -13,6 +13,7 @@ public class Action_AddRequest {
 		pj p1,p2;
 		String DTA;
 		Date day=new Date();
+		DbTools.Rsfresh_Man("MMMM",1,1);
 		ActionContext context=ActionContext.getContext();
 		session=context.getSession();
 		frm=(String)session.get("obj1");
@@ -28,7 +29,7 @@ public class Action_AddRequest {
 		{
 		DbTools.Add_pj(p1,frm);
 		DbTools.Add_pj(p2,to);
-		DbTools.Rsfresh_unread(to,1);
+		DbTools.Rsfresh_Man(to,1,0);
 		return "SUCCESS";
 		}
 		return "FAILED";

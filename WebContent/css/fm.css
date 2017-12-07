@@ -1,0 +1,37 @@
+body{
+    background-image : url(../img/heng1.jpg); /*背景图片*/ 
+}
+.head{
+	color : #8080c0;
+	text-align:center; /*文字居中对齐*/ 
+	font-family : 宋体,sans-serif; /*文字字体*/ 
+	font-size : 25pt; /*文字大小*/ 
+	font-style:itelic; /*文字斜体*/ 
+	font-variant:small-caps; /*小字体*/ 
+	letter-spacing : 1pt; /*字间距离*/ 
+	line-height : 200%; /*设置行高*/ 
+	font-weight:bold; /*文字粗体*/ 
+}
+
+.rightbar{
+	
+	width : 50%;
+	float : right;
+}
+a{
+	color : #ff80ff;
+	text-align:left; /*文字右对齐*/ 
+	font-family : 宋体,sans-serif; /*文字字体*/ 
+	font-size : 15pt; /*文字大小*/ 
+	letter-spacing : 1pt; /*字间距离*/ 
+	line-height : 200%; /*设置行高*/ 
+	 
+}
+.txt{
+	color : #ff80ff;
+	text-align:left; /*文字右对齐*/ 
+	font-family : 宋体,sans-serif; /*文字字体*/ 
+	font-size : 12pt; /*文字大小*/ 
+	letter-spacing : 1pt; /*字间距离*/ 
+	line-height : 200%; /*设置行高*/ 
+}

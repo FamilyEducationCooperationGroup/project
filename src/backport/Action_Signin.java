@@ -19,6 +19,9 @@ public class Action_Signin extends ActionSupport {
 	int MESID;
 	int PJID;
 	int unread;
+	int price;
+	int[] time;
+	int place;
 	private String Fill_Subjects(int[] p) {
 		char []ans;
 		ans=new char[]{'0','0','0','0','0','0','0','0','0'};
@@ -37,10 +40,19 @@ public class Action_Signin extends ActionSupport {
 		}
 		return String.valueOf(ans);
 	}
+	private String Fill_Time(int[] p) {
+		char []ans;
+		ans=new char[]{'0','0','0','0','0','0','0'};
+		for(int i=0;i<p.length;i++)
+		{
+			ans[p[i]]='1';
+		}
+		return String.valueOf(ans);
+	}
 	public String signin() {
-		person=new Man(username,job,name,sex,pwd,Fill_Grades(grades),Fill_Subjects(subjects),tel,MESID,PJID,unread);
+		person=new Man(username,job,name,sex,pwd,Fill_Grades(grades),Fill_Subjects(subjects),tel,MESID,PJID,unread,price,0,0,Fill_Time(time),place,0);
 		Man temp;
-		temp=new Man(person.username,2,null,2,null,null,null,null,0,0,0);
+		temp=new Man(person.username,2,null,2,null,null,null,null,0,0,0,0,0,-1,null,0,0);
 		Pattern pattern = Pattern.compile("[0-9]*");
         Matcher isNum = pattern.matcher(tel);
 		if(username==null){
@@ -62,8 +74,8 @@ public class Action_Signin extends ActionSupport {
 		{
 			return "FAILED5";//电话号格式出错
 		}
-		else if(DbTools.Querry(temp)!=null){
-			temp=new Man(person.username,person.job,person.name,person.sex,person.pwd,person.grade,person.subject,person.tel,0,0,0);
+		else if(DbTools.Querry(temp).isEmpty()){
+			temp=new Man(person.username,person.job,person.name,person.sex,person.pwd,person.grade,person.subject,person.tel,0,0,0,price,0,0,person.time,place,0);
 			DbTools.Add(temp);
 			return "SUCCESS";
 		}
@@ -134,5 +146,30 @@ public class Action_Signin extends ActionSupport {
 	}
 	public void setPJID(int pJID) {
 		PJID = pJID;
+	}
+	public int getUnread() {
+		return unread;
+	}
+	public void setUnread(int unread) {
+		this.unread = unread;
+	}
+	public int getPrice() {
+		return price;
+	}
+	public void setPrice(int price) {
+		this.price = price;
+	}
+	
+	public int getPlace() {
+		return place;
+	}
+	public void setPlace(int place) {
+		this.place = place;
+	}
+	public int[] getTime() {
+		return time;
+	}
+	public void setTime(int[] time) {
+		this.time = time;
 	}
 }

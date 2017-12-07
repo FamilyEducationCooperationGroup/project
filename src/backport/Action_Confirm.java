@@ -10,7 +10,7 @@ public class Action_Confirm extends ActionSupport{
 	String frm;
 	public String Confirm() {
 		DbTools.SetPjInt(originuser, frm, DTA,4,5);
-		DbTools.Rsfresh_unread(originuser,-1);
+		DbTools.Rsfresh_Man(originuser,-1,0);
 		return "SUCCESS";
 	}
 	public String getOriginuser() {

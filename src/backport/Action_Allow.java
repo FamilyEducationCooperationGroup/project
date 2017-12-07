@@ -11,8 +11,12 @@ public class Action_Allow extends ActionSupport{
 	public String Allow() {
 		DbTools.SetPjInt(frm,originuser, DTA,4,4);
 		DbTools.SetPjInt(originuser, frm, DTA, 4,2);
-		DbTools.Rsfresh_unread(originuser,-1);
-		DbTools.Rsfresh_unread(frm,1);
+		DbTools.Rsfresh_Man(originuser,-1,0);
+		DbTools.Rsfresh_Man(frm,1,0);
+		DbTools.Rsfresh_Man(originuser,1,2);
+		DbTools.Rsfresh_Man(frm,1,2);
+		DbTools.Rsfresh_Man(originuser,1,3);
+		DbTools.Rsfresh_Man("MMMM",1,2);
 		return "SUCCESS";
 	}
 	public String getOriginuser() {

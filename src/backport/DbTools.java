@@ -1,8 +1,9 @@
-package backport;
+  package backport;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.table.TableColumnModel;
 public class DbTools {
 	private static int M=20;
 	public static void Add(Man m)
@@ -82,7 +83,7 @@ public class DbTools {
 	try {
 	     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=false","root","1234");
 	     Statement=connect.prepareStatement("INSERT INTO user VALUES"
-	     		+ "(?,?,?,?,?,?,?,?,?,?,?)");
+	     		+ "(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 	     Statement.setString(1,m.username);
 	     Statement.setLong(2,m.job);
 	     Statement.setString(3,m.name);
@@ -94,6 +95,12 @@ public class DbTools {
 	     Statement.setLong(9,m.MESID);
 	     Statement.setLong(10,m.PJID);
 	     Statement.setLong(11,0);
+	     Statement.setLong(12,m.price);
+	     Statement.setLong(13,m.avestar);
+	     Statement.setLong(14,m.oknum);
+	     Statement.setString(15,m.time);
+	     Statement.setLong(16,m.place);
+	     Statement.setLong(17,m.starnum);
 	     Statement.executeUpdate();
 	   }catch (SQLException e) {
            e.printStackTrace();
@@ -120,8 +127,7 @@ public class DbTools {
 	private static void CreateTable(String mES,String pJ,String JD) {
 		Connection connect=null;
 		PreparedStatement Statement=null;
-		
-		try {
+			try {
 		     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=false","root","1234");
 		     Statement=connect.prepareStatement("create table " + mES +" (pos int,frm varchar(20),DTA varchar(20),STR varchar(1000),BR varchar(100),readed int);");
 		     System.out.println("create table " + mES +" (pos int,person varchar(20),DTA varchar(20),STR varchar(1000),BR varchar(100),readed int)");
@@ -191,7 +197,7 @@ public class DbTools {
 		else
 		{
 			for(Man m1:temp) {
-				ans=new Man(m1.username,m1.job,m1.name,m1.sex,m1.pwd,m1.grade,m1.subject,m1.tel,m1.MESID,m1.PJID,m1.unread);
+				ans=new Man(m1.username,m1.job,m1.name,m1.sex,m1.pwd,m1.grade,m1.subject,m1.tel,m1.MESID,m1.PJID,m1.unread,m1.price,m1.avestar,m1.oknum,m1.time,m1.place,m.starnum);
 			}
 		}
 		return ans;
@@ -291,15 +297,25 @@ public class DbTools {
 			querrying_order2.append(" sex='");
 			querrying_order2.append(String.valueOf(m.sex)+"' AND");
 		}
-		if (m.pwd!=null)
+		if (m.price!=0)
 		{
-			querrying_order2.append(" pwd='");
-			querrying_order2.append(m.pwd+"' AND");
+			querrying_order2.append(" price='");
+			querrying_order2.append(m.price+"' AND");
+		}
+		if (m.place!=0)
+		{
+			querrying_order2.append(" place='");
+			querrying_order2.append(m.place+"' AND");
 		}
 		if (m.grade!=null)
 		{
 			querrying_order2.append(" grade LIKE '");
 			querrying_order2.append(Turn_Grade(m.grade)+"' AND");
+		}
+		if (m.time!=null)
+		{
+			querrying_order2.append(" time LIKE '");
+			querrying_order2.append(Turn_Time(m.time)+"' AND");
 		}
 		if (m.subject!=null)
 		{
@@ -340,7 +356,13 @@ public class DbTools {
 				 int MESID=rs.getInt("MESID");
 				 int PJID=rs.getInt("PJID");
 				 int unread=rs.getInt("unread");
-				 Man m0=new Man(username,job,name,sex,pwd,grade,subject,tel,MESID,PJID,unread);
+				 int price=rs.getInt("price");
+				 int avestar=rs.getInt("avestar");
+				 int oknum=rs.getInt("oknum");
+				 String time=rs.getString("time");
+				 int place=rs.getInt("place");
+				 int starnum=rs.getInt("starnum");
+				 Man m0=new Man(username,job,name,sex,pwd,grade,subject,tel,MESID,PJID,unread,price,avestar,oknum,time,place,starnum);
 				 result.add(m0);
 		     }
 		}
@@ -373,26 +395,38 @@ public class DbTools {
 //-------------------------------------------------------------
 		return result;
 	}
-	public static ArrayList<Man> Match(Man m)
+	public static ArrayList<Man> Match(Man m)//目前无法加入价位匹配 --时间匹配--地点匹配
 	{
 		StringBuffer matching_order1;
 		StringBuffer matching_order2;
 		StringBuffer matching_order3;
+		StringBuffer matching_order4;
 		matching_order1=new StringBuffer();
 		matching_order1.append("SELECT DISTINCT * from user where");
 //-------------------------------------------------------		
 		matching_order2=new StringBuffer();
 		matching_order3=new StringBuffer();
+		matching_order4=new StringBuffer();
 		matching_order3.append(") AND (");
+		matching_order4.append(") AND (");
 		char []list_grade;
 		char []list_subject;
+		char []list_time;
 		char []temp;
 		list_grade=m.grade.toCharArray();
 		list_subject=m.subject.toCharArray();
+		list_time=m.time.toCharArray();
 		if (m.job==0)
-			matching_order2.append(" job=1 AND (");
+		{
+			matching_order2.append(" job=1 AND price<=");
+			matching_order2.append(m.price+" AND place=");
+		}
 		else
-			matching_order2.append(" job=0 AND (");
+		{
+			matching_order2.append(" job=0 AND price>=");
+			matching_order2.append(m.price+" AND place=");
+		}
+		matching_order2.append(+m.place+" AND (");
 		for (int i=0;i<12;i++)
 		{
 			temp=new char[] {'_','_','_','_','_','_','_','_','_','_','_','_'};
@@ -414,7 +448,18 @@ public class DbTools {
 				matching_order3.append(String.valueOf(temp)+"' OR");
 			}
 		}
-		matching_order1.append(matching_order3.substring(0, matching_order3.length()-3)+");");
+		matching_order1.append(matching_order3.substring(0, matching_order3.length()-3));
+		for (int i=0;i<6;i++)
+		{
+			temp=new char[] {'_','_','_','_','_','_','_'};
+			if (list_time[i]=='1')
+			{
+				temp[i]='1';
+				matching_order4.append(" time LIKE '");
+				matching_order4.append(String.valueOf(temp)+"' OR");
+			}
+		}
+		matching_order1.append(matching_order4.substring(0, matching_order4.length()-3)+");");
 		System.out.println(matching_order1);
 //------------------------------------------------------
 		Connection connect=null;
@@ -449,7 +494,13 @@ public class DbTools {
 				 int MESID=rs.getInt("MESID");
 				 int PJID=rs.getInt("PJID");
 				 int unread=rs.getInt("unread");
-				 Man m0=new Man(username,job,name,sex,pwd,grade,subject,tel,MESID,PJID,unread);
+				 int price=rs.getInt("price");
+				 int avestar=rs.getInt("avestar");
+				 int oknum=rs.getInt("oknum");
+				 String time=rs.getString("time");
+				 int place=rs.getInt("place");
+				 int starnum=rs.getInt("starnum");
+				 Man m0=new Man(username,job,name,sex,pwd,grade,subject,tel,MESID,PJID,unread,price,avestar,oknum,time,place,starnum);
 				 result.add(m0);
 		     }
 		}
@@ -474,6 +525,25 @@ public class DbTools {
             }
         }
 //-------------------------------------------------------------
+		return result;
+	}
+	private static StringBuffer Turn_Time(String time)
+	{
+		StringBuffer result;
+		char []temp;
+		result=new StringBuffer();
+		temp=time.toCharArray();
+		System.out.println(time);
+		for (int i=0;i<7;i++)
+		{
+			System.out.print(i+" ");
+			System.out.println(temp[i]+" ");
+			if (temp[i]=='1')
+				result.append("1");
+			else
+				result.append("_");
+		}
+		System.out.println(result);
 		return result;
 	}
 	private static StringBuffer Turn_Grade(String grade)
@@ -518,9 +588,9 @@ public class DbTools {
 		Man m_addressee;
 		Man temp_man;
 		int unread;
-		temp_man=new Man(sender,2,null,2,null,null,null,null,0,0,0);
+		temp_man=new Man(sender,2,null,2,null,null,null,null,0,0,0,0,0,-1,null,0,0);
 		m_sender=Querry(temp_man).get(0);
-		temp_man=new Man(addressee,2,null,2,null,null,null,null,0,0,0);
+		temp_man=new Man(addressee,2,null,2,null,null,null,null,0,0,0,0,0,-1,null,0,0);
 		m_addressee=Querry(temp_man).get(0);
 		unread=m_addressee.unread+1;
 		
@@ -793,6 +863,51 @@ public class DbTools {
 		{
 			e.printStackTrace();
 	    }
+		try
+		{
+		     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
+		     if (update.price!=0)
+		     {
+		    	 Statement=connect.prepareStatement("update user set price=? where username=?;");
+		    	 Statement.setLong(1, update.price);
+			     Statement.setString(2, update.username);
+			     Statement.executeUpdate();
+		     }
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+	    }
+		try
+		{
+		     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
+		     if (update.place!=0)
+		     {
+		    	 Statement=connect.prepareStatement("update user set place=? where username=?;");
+		    	 Statement.setLong(1, update.place);
+			     Statement.setString(2, update.username);
+			     Statement.executeUpdate();
+		     }
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+	    }
+		try
+		{
+		     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
+		     if (!update.time.equals("0000000"))
+		     {
+		    	 Statement=connect.prepareStatement("update user set time=? where username=?;");
+		    	 Statement.setString(1, update.time);
+			     Statement.setString(2, update.username);
+			     Statement.executeUpdate();
+		     }
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+	    }
 		finally
         {
             try {
@@ -806,11 +921,22 @@ public class DbTools {
             }
         }
 	}
-	public static void Rsfresh_unread(String originuser,int i) {
+	public static void Rsfresh_Man(String originuser,int i,int mod) {
+		Man man=new Man(originuser,2,null,2,null,null,null,null,0,0,0,0,0,-1,null,0,0);
 		int num=0;
-		Man man=new Man(originuser,2,null,2,null,null,null,null,0,0,0);
 		for(Man m: Querry(man)) {
+			if(mod==0) {
 			num=m.unread+i;
+			}
+			else if(mod==1){
+			num=m.avestar+i;	
+			}
+			else if(mod==2) {
+			num=m.oknum+i;
+			}
+			else if(mod==3) {
+			num=m.starnum+i;
+			}
 		}
 		Connection connect=null;
 		PreparedStatement Statement=null;
@@ -824,7 +950,19 @@ public class DbTools {
 		    }
 		try {
 		     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
+		     if(mod==0)
+		     {
 		     Statement=connect.prepareStatement("update user set unread= ? where username=?");
+		     }
+		     else if(mod==1) {
+		    	 Statement=connect.prepareStatement("update user set avestar= ? where username=?");	 
+		     }
+		     else if(mod==2) {
+		    	 Statement=connect.prepareStatement("update user set oknum= ? where username=?");	 
+		     }
+		     else if(mod==3) {
+		    	 Statement=connect.prepareStatement("update user set starnum= ? where username=?");	 
+		     }
 		     Statement.setLong(1, num);
 		     Statement.setString(2, originuser);
 		     Statement.executeUpdate();
@@ -878,7 +1016,7 @@ public class DbTools {
 	public static void Add_pj(pj p1,String tag) {
 		Connection connect=null;
 		PreparedStatement Statement=null;
-		Man tempman=new Man(tag,2,null,2,null,null,null,null,0,0,0);
+		Man tempman=new Man(tag,2,null,2,null,null,null,null,0,0,0,0,0,-1,null,0,0);
 		int PJID=Querry(tempman).get(0).PJID;
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -968,7 +1106,7 @@ public class DbTools {
 		String ope;
 		Connection connect=null;
 		PreparedStatement Statement=null;
-		Man tempman=new Man(username,2,null,2,null,null,null,null,0,0,0);
+		Man tempman=new Man(username,2,null,2,null,null,null,null,0,0,0,0,0,-1,null,0,0);
 		int PJID=Querry(tempman).get(0).PJID;
 		if(pos==4) {
 			ope=" proc= ";
@@ -1010,7 +1148,7 @@ public class DbTools {
 		Connection connect=null;
 		PreparedStatement Statement=null;
 		ResultSet rs=null;
-		Man tempman=new Man(frm,2,null,2,null,null,null,null,0,0,0);
+		Man tempman=new Man(frm,2,null,2,null,null,null,null,0,0,0,0,0,-1,null,0,0);
 		int PJID=Querry(tempman).get(0).PJID;
 		
 		try {
@@ -1049,7 +1187,7 @@ public class DbTools {
 	public static void Delete_pj(String originuser, String frm) {
 		Connection connect=null;
 		PreparedStatement Statement=null;
-		Man tempman=new Man(originuser,2,null,2,null,null,null,null,0,0,0);
+		Man tempman=new Man(originuser,2,null,2,null,null,null,null,0,0,0,0,0,-1,null,0,0);
 		int PJID=Querry(tempman).get(0).PJID;
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -1083,7 +1221,7 @@ public class DbTools {
 		ArrayList<Ass> result = new ArrayList<Ass>();
 		StringBuffer querrying_order;
 		Man temp_man,m_frm;
-		temp_man=new Man(frm,2,null,2,null,null,null,null,0,0,0);
+		temp_man=new Man(frm,2,null,2,null,null,null,null,0,0,0,0,0,-1,null,0,0);
 		m_frm=Querry(temp_man).get(0);
 		querrying_order=new StringBuffer();
 		querrying_order.append("SELECT * from JD"+m_frm.PJID);
@@ -1149,9 +1287,9 @@ public class DbTools {
 	{
 		ArrayList<Ass> tmp;
 		Man m_frm,m_others,temp_man;
-		temp_man=new Man(frm,2,null,2,null,null,null,null,0,0,0);
+		temp_man=new Man(frm,2,null,2,null,null,null,null,0,0,0,0,0,-1,null,0,0);
 		m_frm=Querry(temp_man).get(0);
-		temp_man=new Man(assess.frm,2,null,2,null,null,null,null,0,0,0);
+		temp_man=new Man(assess.frm,2,null,2,null,null,null,null,0,0,0,0,0,-1,null,0,0);
 		m_others=Querry(temp_man).get(0);
 		tmp=Querry_Assess(frm,assess.frm,assess.pos);
 		
@@ -1169,6 +1307,8 @@ public class DbTools {
 	    }
 		if (tmp.size()!=0)
 		{
+			System.out.println(tmp.get(0).star);
+		    DbTools.Rsfresh_Man(assess.frm,assess.star-tmp.get(0).star,1);
 			try
 			{
 			    connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
@@ -1216,6 +1356,8 @@ public class DbTools {
 		}
 		else
 		{
+			DbTools.Rsfresh_Man(assess.frm,assess.star,1);
+			DbTools.Rsfresh_Man(assess.frm,1,3);
 			try
 			{
 			    connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
@@ -1265,13 +1407,17 @@ public class DbTools {
 	}
 	public static String Delete_Assess(String frm,String others)
 	{
+		Ass a_others;
 		Man m_frm, m_others, temp_man;
-		temp_man=new Man(frm,2,null,2,null,null,null,null,0,0,0);
+		temp_man=new Man(frm,2,null,2,null,null,null,null,0,0,0,0,0,-1,null,0,0);
 		m_frm=Querry(temp_man).get(0);
-		temp_man=new Man(others,2,null,2,null,null,null,null,0,0,0);
+		temp_man=new Man(others,2,null,2,null,null,null,null,0,0,0,0,0,-1,null,0,0);
 		m_others=Querry(temp_man).get(0);
 		Connection connect=null;
 		PreparedStatement Statement=null;
+		a_others=DbTools.Querry_Assess(frm,others,1).get(0);
+		Rsfresh_Man(others,-1*a_others.star,1);
+		Rsfresh_Man(others,-1,3);
 		try 
 		{
 			Class.forName("com.mysql.jdbc.Driver");

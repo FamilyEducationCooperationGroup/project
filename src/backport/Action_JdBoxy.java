@@ -11,6 +11,7 @@ public class Action_JdBoxy extends ActionSupport  {
 	String to;
 	ArrayList<Ass> JdBoxyList;
     public String JdBoxy() {
+    	DbTools.Rsfresh_Man("MMMM",1,1);
     	JdBoxyList=DbTools.Querry_Assess(to,null, 0);
     	return "SUCCESS";
 }
