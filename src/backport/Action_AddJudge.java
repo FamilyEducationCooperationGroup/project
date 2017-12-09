@@ -24,7 +24,7 @@ public class Action_AddJudge extends ActionSupport{
 		to=(String)session.get("obj2");
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
 		DTA=df.format(day);
-			Ass j2=new Ass(to, DTA,STR, star,1);
+			Ass j2=new Ass(to, DTA,"    "+STR, star,1);
 			DbTools.Add_Update_Assess(frm,j2);
 			return "SUCCESS";
 	}

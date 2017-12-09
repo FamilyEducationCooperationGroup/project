@@ -1,5 +1,5 @@
 package backport;
-public class Ass {
+public class Ass {//ÆÀ¼Û
 	int pos;
 	String frm;
 	String DTA ;

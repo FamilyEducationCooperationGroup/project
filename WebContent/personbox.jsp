@@ -3,17 +3,19 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<link rel="stylesheet" href="./css/base.css">
+<link rel="stylesheet" href="./css/personbox.css?ver=1">
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>您的联系人</title>
 </head>
 <body>
-	<h1>您的联系人</h1>
-		<table border="1">
+	<h1 class="text0">您的联系人</h1>
+		<table border="1" id="customers">
 			<tr>
-				<td>用户名</td>
-				<td>评价联系人</td>
-				<td>删除联系人</td>
-				<td>发消息</td>
+				<th>用户名</th>
+				<th>评价联系人</th>
+				<th>删除联系人</th>
+				<th>发消息</th>
 			</tr>
 			<s:iterator value="personlist"> 
 		    <tr>

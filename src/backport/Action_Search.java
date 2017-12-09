@@ -27,6 +27,8 @@ public class Action_Search extends ActionSupport {
 	int avestar;
 	int oknum;
 	int place;
+	public int jb;
+	public int jbself;
 	private Map<String, Object>session;
 	ArrayList<man_out> result = new ArrayList<man_out>();
 	ArrayList<man_out> convertResult(ArrayList<Man> ipt){
@@ -94,29 +96,29 @@ public class Action_Search extends ActionSupport {
 	}
 		private String convertPlace(int place2) {
 			String ans=new String();
-			if (place2==12)
+			if (place2==1)
 				ans="哈尔滨市";
-			else if (place2==1)
-				ans="齐齐哈尔市";
 			else if (place2==2)
-				ans="鸡西市";
+				ans="齐齐哈尔市";
 			else if (place2==3)
-				ans="鹤岗市";
+				ans="鸡西市";
 			else if (place2==4)
-				ans="双鸭山市";
+				ans="鹤岗市";
 			else if (place2==5)
-				ans="大庆市";
+				ans="双鸭山市";
 			else if (place2==6)
-				ans="伊春市";
+				ans="大庆市";
 			else if (place2==7)
-				ans="佳木斯市";
+				ans="伊春市";
 			else if (place2==8)
-				ans="七台河市";
+				ans="佳木斯市";
 			else if (place2==9)
-				ans="牡丹江市";
+				ans="七台河市";
 			else if (place2==10)
-				ans="黑河市";
+				ans="牡丹江市";
 			else if (place2==11)
+				ans="黑河市";
+			else if (place2==12)
 				ans="绥化市";
 			else  if (place2==13) {
 				ans="大兴安岭地区";
@@ -184,9 +186,13 @@ public class Action_Search extends ActionSupport {
 		return String.valueOf(ans);
 	}
 	public String search() {
+		jb=job;
 		ActionContext context=ActionContext.getContext();
 		session=context.getSession();
 		originuser=(String)session.get("obj1");
+		Man temp=new Man(originuser,2,null,2,null,null,null,null,0,0,0,0,0,-1,null,0,0);
+		temp=DbTools.Fill(temp);
+		jbself=temp.job;
 		if (username.equals(""))
 			username=null;
 		if (name.equals(""))
@@ -313,5 +319,17 @@ public class Action_Search extends ActionSupport {
 	}
 	public void setPlace(int place) {
 		this.place = place;
+	}
+	public int getJb() {
+		return jb;
+	}
+	public void setJb(int jb) {
+		this.jb = jb;
+	}
+	public int getJbself() {
+		return jbself;
+	}
+	public void setJbself(int jbself) {
+		this.jbself = jbself;
 	}
 }

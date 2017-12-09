@@ -28,7 +28,7 @@ public class Action_Syspj extends ActionSupport{
 		}
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
 		DTA=df.format(day);
-		ipt=new syspj(STR,DTA,username);
+		ipt=new syspj("    "+STR,DTA,username);
 		DbTools.Add_SysPj(ipt);
 		return SUCCESS;
 	}

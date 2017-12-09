@@ -20,11 +20,11 @@ public class Action_AddRequest {
 		to=(String)session.get("obj2");
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
 		DTA=df.format(day);
-		p1=new pj(to, match_mes,DTA,3,-1,"");
-		p2=new pj(frm,match_mes,DTA,1,-1,"");
+		p1=new pj(to, "    "+match_mes,DTA,3,-1,"");
+		p2=new pj(frm,"    "+match_mes,DTA,1,-1,"");
 		if(
-		(!DbTools.CheckPjByusername(to,frm))&&
-		(!DbTools.CheckPjByusername(frm,to))
+		(DbTools.CheckPjByusername(to,frm)==-1)&&
+		(DbTools.CheckPjByusername(frm,to)==-1)
 		)
 		{
 		DbTools.Add_pj(p1,frm);

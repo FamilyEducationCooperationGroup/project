@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.table.TableColumnModel;
+
+import com.sun.glass.ui.InvokeLaterDispatcher.InvokeLaterSubmitter;
 public class DbTools {
 	private static int M=20;
 	public static void Add(Man m)
@@ -281,6 +283,11 @@ public class DbTools {
 		{
 			querrying_order2.append(" username='");
 			querrying_order2.append(m.username+"' AND");
+		}
+		if (m.pwd!=null)
+		{
+			querrying_order2.append(" pwd='");
+			querrying_order2.append(m.pwd+"' AND");
 		}
 		if (m.job!=2)	
 		{
@@ -1143,8 +1150,8 @@ public class DbTools {
 	            }
 	        }
 	}
-	public static boolean CheckPjByusername(String frm, String to) {
-		int flag=0;
+	public static int CheckPjByusername(String frm, String to) {
+		int flag=-1;
 		Connection connect=null;
 		PreparedStatement Statement=null;
 		ResultSet rs=null;
@@ -1161,11 +1168,11 @@ public class DbTools {
 		    }
 		try {
 		     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
-		     Statement=connect.prepareStatement("select DTA from pj"+PJID+" where frm=?");
+		     Statement=connect.prepareStatement("select * from pj"+PJID+" where frm=?");
 		     Statement.setString(1,to);
 		     rs=Statement.executeQuery();
 		     while(rs.next()) {
-		    	 flag=1;
+		    	 flag=rs.getInt("proc");
 		     }
 		   }catch (SQLException e) {
 	            e.printStackTrace();
@@ -1180,9 +1187,7 @@ public class DbTools {
 	                e.printStackTrace();
 	            }
 	        }
-		if(flag==1)
-			return true;
-		return false;
+		return flag;
 	}
 	public static void Delete_pj(String originuser, String frm) {
 		Connection connect=null;
@@ -1468,4 +1473,250 @@ public class DbTools {
         }
 		return "SUCCESS";
 	}
+	public static int QuerryManNum(Man m) {
+		StringBuffer querrying_order1;
+		StringBuffer querrying_order2;
+		querrying_order1=new StringBuffer();
+		querrying_order1.append("SELECT count(*) from user where");
+//-------------------------------------------------------		
+		querrying_order2=new StringBuffer();
+		if (m.username!=null)
+		{
+			querrying_order2.append(" username='");
+			querrying_order2.append(m.username+"' AND");
+		}
+		if (m.pwd!=null)
+		{
+			querrying_order2.append(" pwd='");
+			querrying_order2.append(m.pwd+"' AND");
+		}
+		if (m.job!=2)	
+		{
+			querrying_order2.append(" job='");
+			querrying_order2.append(String.valueOf(m.job)+"' AND");
+		}
+		if (m.name!=null)
+		{
+			querrying_order2.append(" name='");
+			querrying_order2.append(m.name+"' AND");
+		}
+		if (m.sex!=2)	
+		{
+			querrying_order2.append(" sex='");
+			querrying_order2.append(String.valueOf(m.sex)+"' AND");
+		}
+		if (m.price!=0)
+		{
+			querrying_order2.append(" price='");
+			querrying_order2.append(m.price+"' AND");
+		}
+		if (m.place!=0)
+		{
+			querrying_order2.append(" place='");
+			querrying_order2.append(m.place+"' AND");
+		}
+		if (m.grade!=null)
+		{
+			querrying_order2.append(" grade LIKE '");
+			querrying_order2.append(Turn_Grade(m.grade)+"' AND");
+		}
+		if (m.time!=null)
+		{
+			querrying_order2.append(" time LIKE '");
+			querrying_order2.append(Turn_Time(m.time)+"' AND");
+		}
+		if (m.subject!=null)
+		{
+			querrying_order2.append(" subject LIKE '");
+			querrying_order2.append(Turn_Subject(m.subject)+"' AND");
+		}
+		querrying_order1.append(querrying_order2.substring(0, querrying_order2.length()-4)+";");
+//------------------------------------------------------
+		Connection connect=null;
+		PreparedStatement Statement=null;
+		ResultSet rs = null;
+		int result=0;
+		try 
+		{
+			Class.forName("com.mysql.jdbc.Driver");
+		         System.out.println("Success loading Mysql Driver1!");
+		}
+		catch (Exception e)
+		{
+		         System.out.print("Error loading Mysql Driver!");
+		         e.printStackTrace();
+	    }
+		try
+		{
+		     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
+		     Statement=connect.prepareStatement(querrying_order1.toString());
+		     rs =Statement.executeQuery();
+		     while(rs.next())
+		     {
+		    	 result=rs.getInt("count(*)");
+		     }
+		}
+		catch (SQLException e)
+		{
+            e.printStackTrace();
+        }
+		finally
+        {
+            try
+            {
+                if(rs!=null)
+                {
+                    rs.close();
+                }
+                if(Statement!=null)
+                {
+                    Statement.close();
+                }
+                if(connect!=null)
+                {
+                    connect.close();
+                }
+            }
+            catch (SQLException e)
+            {
+                e.printStackTrace();
+            }
+        }
+//------------------------------------------------------------
+		return result;
+	}
+	/*
+	public static ArrayList<Man> QuerryDiv(Man m, int i) {
+		StringBuffer querrying_order1;
+		StringBuffer querrying_order2;
+		querrying_order1=new StringBuffer();
+		querrying_order1.append("SELECT * from user where");
+//-------------------------------------------------------		
+		querrying_order2=new StringBuffer();
+		if (m.username!=null)
+		{
+			querrying_order2.append(" username='");
+			querrying_order2.append(m.username+"' AND");
+		}
+		if (m.pwd!=null)
+		{
+			querrying_order2.append(" pwd='");
+			querrying_order2.append(m.pwd+"' AND");
+		}
+		if (m.job!=2)	
+		{
+			querrying_order2.append(" job='");
+			querrying_order2.append(String.valueOf(m.job)+"' AND");
+		}
+		if (m.name!=null)
+		{
+			querrying_order2.append(" name='");
+			querrying_order2.append(m.name+"' AND");
+		}
+		if (m.sex!=2)	
+		{
+			querrying_order2.append(" sex='");
+			querrying_order2.append(String.valueOf(m.sex)+"' AND");
+		}
+		if (m.price!=0)
+		{
+			querrying_order2.append(" price='");
+			querrying_order2.append(m.price+"' AND");
+		}
+		if (m.place!=0)
+		{
+			querrying_order2.append(" place='");
+			querrying_order2.append(m.place+"' AND");
+		}
+		if (m.grade!=null)
+		{
+			querrying_order2.append(" grade LIKE '");
+			querrying_order2.append(Turn_Grade(m.grade)+"' AND");
+		}
+		if (m.time!=null)
+		{
+			querrying_order2.append(" time LIKE '");
+			querrying_order2.append(Turn_Time(m.time)+"' AND");
+		}
+		if (m.subject!=null)
+		{
+			querrying_order2.append(" subject LIKE '");
+			querrying_order2.append(Turn_Subject(m.subject)+"' AND");
+		}
+		querrying_order1.append(querrying_order2.substring(0, querrying_order2.length()-4));
+		querrying_order1.append(" LIMIT "+ String.valueOf((i-1)*1));
+		querrying_order1.append(", 1 ;");
+//------------------------------------------------------
+		Connection connect=null;
+		PreparedStatement Statement=null;
+		ResultSet rs = null;
+		ArrayList<Man> result = new ArrayList<Man>();
+		try 
+		{
+			Class.forName("com.mysql.jdbc.Driver");
+		         System.out.println("Success loading Mysql Driver1!");
+		}
+		catch (Exception e)
+		{
+		         System.out.print("Error loading Mysql Driver!");
+		         e.printStackTrace();
+	    }
+		try
+		{
+		     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
+		     Statement=connect.prepareStatement(querrying_order1.toString());
+		     rs =Statement.executeQuery();
+		     while(rs.next())
+		     {
+		    	 String username=rs.getString("username");
+				 int job=rs.getInt("job");
+				 String name=rs.getString("name");
+				 int sex=rs.getInt("sex");
+				 String pwd=rs.getString("pwd");
+				 String grade=rs.getString("grade");
+				 String subject=rs.getString("subject");
+				 String tel=rs.getString("tel");
+				 int MESID=rs.getInt("MESID");
+				 int PJID=rs.getInt("PJID");
+				 int unread=rs.getInt("unread");
+				 int price=rs.getInt("price");
+				 int avestar=rs.getInt("avestar");
+				 int oknum=rs.getInt("oknum");
+				 String time=rs.getString("time");
+				 int place=rs.getInt("place");
+				 int starnum=rs.getInt("starnum");
+				 Man m0=new Man(username,job,name,sex,pwd,grade,subject,tel,MESID,PJID,unread,price,avestar,oknum,time,place,starnum);
+				 result.add(m0);
+		     }
+		}
+		catch (SQLException e)
+		{
+            e.printStackTrace();
+        }
+		finally
+        {
+            try
+            {
+                if(rs!=null)
+                {
+                    rs.close();
+                }
+                if(Statement!=null)
+                {
+                    Statement.close();
+                }
+                if(connect!=null)
+                {
+                    connect.close();
+                }
+            }
+            catch (SQLException e)
+            {
+                e.printStackTrace();
+            }
+        }
+//-------------------------------------------------------------
+		return result;
+	}
+	*/
 }

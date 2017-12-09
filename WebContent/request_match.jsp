@@ -3,9 +3,11 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
     <head>
+    <link rel="stylesheet" href="./css/base.css">
+	<link rel="stylesheet" href="./css/fm.css?ver=2">
         <title>申请</title>
     </head>
-    <body>
+    <body class="bg1">
     	
     	<%
     	String s=request.getParameter("frm");
@@ -15,7 +17,7 @@
     	%>
     	
         <s:form action="requestmatch.action">
-    	<s:textarea label="请输入简要说明（不多于20词）" name="match_mes" cols="40" rows="10"/>
+    	<s:textarea label="请输入简要说明（不多于20词）" name="match_mes" cols="100" rows="10"/>
             <s:submit value="发送" />
      </s:form>
     </body>

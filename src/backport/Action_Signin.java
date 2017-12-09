@@ -55,10 +55,10 @@ public class Action_Signin extends ActionSupport {
 		temp=new Man(person.username,2,null,2,null,null,null,null,0,0,0,0,0,-1,null,0,0);
 		Pattern pattern = Pattern.compile("[0-9]*");
         Matcher isNum = pattern.matcher(tel);
-		if(username==null){
+		if(username.equals("")){
 			return "FAILED1";//未输入用户名
 		}
-		else if (pwd==null)
+		else if (pwd.equals(""))
 		{
 			return "FAILED2";//未输入密码
 		}
@@ -70,9 +70,12 @@ public class Action_Signin extends ActionSupport {
 		{
 			return "FAILED4";//未选择年级
 		}
+		else if((person.time.equals("0000000"))) {
+			return "FAILED5";//未选择时间段
+		}
 		else if (!isNum.matches()||tel.length()>11)
 		{
-			return "FAILED5";//电话号格式出错
+			return "FAILED6";//电话号格式出错
 		}
 		else if(DbTools.Querry(temp).isEmpty()){
 			temp=new Man(person.username,person.job,person.name,person.sex,person.pwd,person.grade,person.subject,person.tel,0,0,0,price,0,0,person.time,place,0);

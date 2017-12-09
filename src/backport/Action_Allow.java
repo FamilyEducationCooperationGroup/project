@@ -15,7 +15,6 @@ public class Action_Allow extends ActionSupport{
 		DbTools.Rsfresh_Man(frm,1,0);
 		DbTools.Rsfresh_Man(originuser,1,2);
 		DbTools.Rsfresh_Man(frm,1,2);
-		DbTools.Rsfresh_Man(originuser,1,3);
 		DbTools.Rsfresh_Man("MMMM",1,2);
 		return "SUCCESS";
 	}

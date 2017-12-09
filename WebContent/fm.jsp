@@ -8,7 +8,7 @@
         <title>登录或注册</title>
     </head>
     <body>
-    	<div class="head">欢迎使用爷就是神家教平台</div>
+    	<div class="head">家教服务系统</div>
     	
     	<div class="rightbar">
         <s:form action="login">

@@ -1,5 +1,10 @@
 body{
+	padding : 0px 20px;
     background-image : url(../img/heng1.jpg); /*背景图片*/ 
+}
+.bg1{
+	background-image : url(../img/heng.jpg); /*背景图片*/ 
+	padding : 0px 20px;
 }
 .head{
 	color : #8080c0;
@@ -34,4 +39,7 @@ a{
 	font-size : 12pt; /*文字大小*/ 
 	letter-spacing : 1pt; /*字间距离*/ 
 	line-height : 200%; /*设置行高*/ 
+}
+.border{
+	border : 2px solid #000;
 }

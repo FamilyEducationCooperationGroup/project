@@ -8,6 +8,10 @@ public class Action_DeletePj  extends ActionSupport{
 	String originuser;
 	String frm;
 	public String DeletePj() {
+		int s=DbTools.CheckPjByusername(originuser,frm);
+		if(DbTools.CheckPjByusername(originuser,frm)==4) {
+			DbTools.Rsfresh_Man(originuser,-1,0);
+		}
 		DbTools.Delete_pj(originuser,frm);
 		DbTools.Delete_pj(frm,originuser);
 		return "SUCCESS";

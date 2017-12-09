@@ -3,9 +3,11 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
     <head>
+    <link rel="stylesheet" href="./css/base.css">
+	<link rel="stylesheet" href="./css/fm.css?ver=2">
         <title>对话</title>
     </head>
-    <body>
+    <body class="bg1">
     	
     	<%
     	String s=request.getParameter("frm");
@@ -15,7 +17,7 @@
     	%>
     	
         <s:form action="dialog.action">
-    	<s:textarea label="请输入内容" name="message" cols="40" rows="10"/>
+    	<s:textarea label="请输入内容" name="message" cols="100" rows="10"/>
             <s:submit value="发送" />
      </s:form>
     </body>

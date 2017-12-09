@@ -32,7 +32,7 @@ public class Action_AddMessage extends ActionSupport {
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
 		date=df.format(day);
 		System.out.println(date);
-		DbTools.Add_Message(sender, addressee, date, message);
+		DbTools.Add_Message(sender, addressee, date,"    "+message);
 		return "SUCCESS";
 	}
 	
