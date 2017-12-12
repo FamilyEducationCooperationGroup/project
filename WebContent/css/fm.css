@@ -17,11 +17,19 @@ body{
 	line-height : 200%; /*设置行高*/ 
 	font-weight:bold; /*文字粗体*/ 
 }
-
-.rightbar{
-	
-	width : 50%;
-	float : right;
+.warningbar{
+	display:block;
+	text-align : center;
+	color : #ff0000;
+}
+.warningbarl{
+	display:block;
+	text-align : left;
+	color : #ff0000;
+}
+.mainbar{
+	text-align : center;
+	margin:0 auto;
 }
 a{
 	color : #ff80ff;

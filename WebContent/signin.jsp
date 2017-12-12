@@ -5,15 +5,19 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <link rel="stylesheet" href="./css/base.css">
-<link rel="stylesheet" href="./css/fm.css?ver=32">
+<link rel="stylesheet" href="./css/fm.css?ver=33">
 <title>注册</title>
 </head>
 <body>
       <h3>请填写用户信息 </h3>
+      <div class="warningbarl">
+		    <s:property value="#parameters.type"/>
+	  </div>
       <s:form action="signin">
       <p class=txt>
             <s:textfield label="您的用户名（此项必填）" name="username" />
             <s:password label="您的密码（此项必填）" name="pwd" />
+            <s:password label="确认密码（此项必填）" name="pwdr" />
            	<s:radio list="#{0:'学生',1:'老师'}" name="job" label="职业" required="true" value="1" ></s:radio> 
            	<s:textfield label="姓名" name="name" />
             <s:radio list="#{0:'男',1:'女'}" name="sex" label="性别" required="true" value="1" ></s:radio>  

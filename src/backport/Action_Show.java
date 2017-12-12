@@ -166,5 +166,6 @@ public class Action_Show extends ActionSupport{
 	public void setJbself(int jbself) {
 		this.jbself = jbself;
 	}
+	
 
 }

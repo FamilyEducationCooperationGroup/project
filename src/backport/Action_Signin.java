@@ -13,6 +13,7 @@ public class Action_Signin extends ActionSupport {
 	String name;
 	int sex;
 	String pwd;
+	String pwdr;
 	int[] grades;
 	int[] subjects;
 	String tel;
@@ -56,11 +57,22 @@ public class Action_Signin extends ActionSupport {
 		Pattern pattern = Pattern.compile("[0-9]*");
         Matcher isNum = pattern.matcher(tel);
 		if(username.equals("")){
-			return "FAILED1";//未输入用户名
+			return "FAILED11";//未输入用户名
+		}
+		else if (username.length()>20)
+		{
+			return "FAILED12";//用户名过长
 		}
 		else if (pwd.equals(""))
 		{
-			return "FAILED2";//未输入密码
+			return "FAILED21";//未输入密码
+		}
+		else if (pwd.length()>20)
+		{
+			return "FAILED22";//密码过长
+		}
+		else if(!pwd.equals(pwdr)) {
+			return "FAILED23";
 		}
 		else if ((person.subject).equals("000000000"))
 		{
@@ -80,9 +92,10 @@ public class Action_Signin extends ActionSupport {
 		else if(DbTools.Querry(temp).isEmpty()){
 			temp=new Man(person.username,person.job,person.name,person.sex,person.pwd,person.grade,person.subject,person.tel,0,0,0,price,0,0,person.time,place,0);
 			DbTools.Add(temp);
+			
 			return "SUCCESS";
 		}
-	    	return "FAILED2";
+	    	return "FAILED7";
 	}
 	public Man getPerson() {
 		return person;
@@ -174,5 +187,11 @@ public class Action_Signin extends ActionSupport {
 	}
 	public void setTime(int[] time) {
 		this.time = time;
+	}
+	public String getPwdr() {
+		return pwdr;
+	}
+	public void setPwdr(String pwdr) {
+		this.pwdr = pwdr;
 	}
 }

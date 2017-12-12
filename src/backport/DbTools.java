@@ -2,12 +2,15 @@
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.table.TableColumnModel;
-
-import com.sun.glass.ui.InvokeLaterDispatcher.InvokeLaterSubmitter;
 public class DbTools {
 	private static int M=20;
+	private static String U="mkon4ok2nx";
+	private static String H="zhmwzm4jj3yxli21w2hx31wz4zww24hh1ki0i043";
+	private static String L="jdbc:mysql://wwsveoruxclr.mysql.sae.sina.com.cn:10325/db?useSSL=true";
+	//private static String U="root";
+	//private static String H="1234";
+	//private static String L="jdbc:mysql://localhost:3306/db?useSSL=true";
+	
 	public static void Add(Man m)
 	{
 	Connection connect=null;
@@ -24,8 +27,9 @@ public class DbTools {
 	         System.out.print("Error loading Mysql Driver!");
 	         e.printStackTrace();
 	    }
+	//"jdbc:mysql://localhost:3306/db?useSSL=true"
 	try {
-	     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
+	     connect = DriverManager.getConnection(L,U,H);
 	     Statement=connect.prepareStatement("SELECT * FROM user where username='MMMM'");
 	     rs =Statement.executeQuery();
 	     rs.next();
@@ -53,7 +57,7 @@ public class DbTools {
             }
         }
 	try {
-	     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=false","root","1234");
+	     connect = DriverManager.getConnection(L,U,H);
 	     Statement=connect.prepareStatement("update user set MESID = ? where username='MMMM'");
 	     Statement.setLong(1,m.PJID+1);
 	     Statement.executeUpdate();
@@ -83,7 +87,7 @@ public class DbTools {
 	         e.printStackTrace();
 	    }
 	try {
-	     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=false","root","1234");
+	     connect = DriverManager.getConnection(L,U,H);
 	     Statement=connect.prepareStatement("INSERT INTO user VALUES"
 	     		+ "(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 	     Statement.setString(1,m.username);
@@ -130,7 +134,7 @@ public class DbTools {
 		Connection connect=null;
 		PreparedStatement Statement=null;
 			try {
-		     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=false","root","1234");
+		     connect = DriverManager.getConnection(L,U,H);
 		     Statement=connect.prepareStatement("create table " + mES +" (pos int,frm varchar(20),DTA varchar(20),STR varchar(1000),BR varchar(100),readed int);");
 		     System.out.println("create table " + mES +" (pos int,person varchar(20),DTA varchar(20),STR varchar(1000),BR varchar(100),readed int)");
 		     Statement.executeUpdate();
@@ -153,7 +157,7 @@ public class DbTools {
 	        }
 		try
 		{
-			connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=false","root","1234");
+			connect = DriverManager.getConnection(L,U,H);
 			Statement=connect.prepareStatement("create table  " + pJ +" (frm varchar(20),mes varchar(40),DTA varchar(20),proc int,star int,judgement varchar(2000));");
 			//System.out.println("create table  " + pJ +" (DTA varchar(20),STR varchar(2000),star int)");
 			Statement.executeUpdate();
@@ -164,7 +168,7 @@ public class DbTools {
 	    }
 		try
 		{
-			connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=false","root","1234");
+			connect = DriverManager.getConnection(L,U,H);
 			Statement=connect.prepareStatement("create table  " + JD +" (frm varchar(20),DTA varchar(20),STR varchar(2000),star int,pos int);");
 			//System.out.println("create table  " + JD +" (frm varchar(20),DTA varchar(20),STR varchar(2000),star int,pos int);");
 			Statement.executeUpdate();
@@ -234,7 +238,7 @@ public class DbTools {
 		         e.printStackTrace();
 		    }
 		try {
-		     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
+		     connect = DriverManager.getConnection(L,U,H);
 		     Statement=connect.prepareStatement("SELECT * FROM" + " mes"+String.valueOf(MSID)+" where "+temp+" ORDER BY readed ASC");
 		     System.out.println("SELECT * FROM" + " mes"+String.valueOf(MSID)+" where "+temp+" ORDER BY readed ASC");
 		     rs =Statement.executeQuery();
@@ -347,7 +351,7 @@ public class DbTools {
 	    }
 		try
 		{
-		     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
+		     connect = DriverManager.getConnection(L,U,H);
 		     Statement=connect.prepareStatement(querrying_order1.toString());
 		     rs =Statement.executeQuery();
 		     while(rs.next())
@@ -485,7 +489,7 @@ public class DbTools {
 	    }
 		try
 		{
-		     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
+		     connect = DriverManager.getConnection(L,U,H);
 		     Statement=connect.prepareStatement(matching_order1.toString());
 		     rs =Statement.executeQuery();
 		     while(rs.next())
@@ -621,7 +625,7 @@ public class DbTools {
 	    }
 		try
 		{
-		     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
+		     connect = DriverManager.getConnection(L,U,H);
 		     Statement=connect.prepareStatement("insert into mes"+m_sender.MESID+" values(?,?,?,?,?,?);");
 		     Statement.setLong(1,0);
 		     Statement.setString(2,addressee);
@@ -638,7 +642,7 @@ public class DbTools {
         }
 		try
 		{
-		     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
+		     connect = DriverManager.getConnection(L,U,H);
 		     Statement=connect.prepareStatement("insert into mes"+m_addressee.MESID+" values(?,?,?,?,?,?);");
 		     Statement.setLong(1,1);
 		     Statement.setString(2,sender);
@@ -654,7 +658,7 @@ public class DbTools {
         }
 		try
 		{
-		     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
+		     connect = DriverManager.getConnection(L,U,H);
 		     Statement=connect.prepareStatement("update user set unread=? where username=?;");
 		     Statement.setLong(1,unread);
 		     Statement.setString(2,addressee);
@@ -696,7 +700,7 @@ public class DbTools {
 	    }
 		try
 		{
-			connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
+			connect = DriverManager.getConnection(L,U,H);
 		    Statement=connect.prepareStatement("delete from mes"+MESID+" where frm=? and DTA=?;");
 		    Statement.setString(1,frm);
 		    Statement.setString(2,date);
@@ -751,7 +755,7 @@ public class DbTools {
 	    }
 		try
 		{
-		     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
+		     connect = DriverManager.getConnection(L,U,H);
 		     Statement=connect.prepareStatement(querrying_order.toString());
 		     rs =Statement.executeQuery();
 		     while(rs.next())
@@ -766,7 +770,7 @@ public class DbTools {
         }
 		try
 		{
-		     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
+		     connect = DriverManager.getConnection(L,U,H);
 		     if (refesh==1)
 			 {
 			     Statement=connect.prepareStatement(refesh_order.toString());
@@ -816,7 +820,7 @@ public class DbTools {
 		{
 			if(!update.grade.equals("000000000000"))
 			{
-		     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
+		     connect = DriverManager.getConnection(L,U,H);
 		     Statement=connect.prepareStatement("update user set grade=? where username=?;");
 		     Statement.setString(1, update.grade);
 		     Statement.setString(2, update.username);
@@ -830,7 +834,7 @@ public class DbTools {
 		try
 		{
 			if(!update.subject.equals("000000000")) {
-		     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
+		     connect = DriverManager.getConnection(L,U,H);
 		     Statement=connect.prepareStatement("update user set subject=? where username=?;");
 		     Statement.setString(1, update.subject);
 		     Statement.setString(2, update.username);
@@ -843,7 +847,7 @@ public class DbTools {
 	    }
 		try
 		{
-		     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
+		     connect = DriverManager.getConnection(L,U,H);
 		     if (!update.tel.equals(""))
 		     {
 		    	 Statement=connect.prepareStatement("update user set tel=? where username=?;");
@@ -857,7 +861,7 @@ public class DbTools {
 	    }
 		try
 		{
-		     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
+		     connect = DriverManager.getConnection(L,U,H);
 		     if (!update.pwd.equals(""))
 		     {
 		    	 Statement=connect.prepareStatement("update user set pwd=? where username=?;");
@@ -872,7 +876,7 @@ public class DbTools {
 	    }
 		try
 		{
-		     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
+		     connect = DriverManager.getConnection(L,U,H);
 		     if (update.price!=0)
 		     {
 		    	 Statement=connect.prepareStatement("update user set price=? where username=?;");
@@ -887,7 +891,7 @@ public class DbTools {
 	    }
 		try
 		{
-		     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
+		     connect = DriverManager.getConnection(L,U,H);
 		     if (update.place!=0)
 		     {
 		    	 Statement=connect.prepareStatement("update user set place=? where username=?;");
@@ -902,7 +906,7 @@ public class DbTools {
 	    }
 		try
 		{
-		     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
+		     connect = DriverManager.getConnection(L,U,H);
 		     if (!update.time.equals("0000000"))
 		     {
 		    	 Statement=connect.prepareStatement("update user set time=? where username=?;");
@@ -956,7 +960,7 @@ public class DbTools {
 		         e.printStackTrace();
 		    }
 		try {
-		     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
+		     connect = DriverManager.getConnection(L,U,H);
 		     if(mod==0)
 		     {
 		     Statement=connect.prepareStatement("update user set unread= ? where username=?");
@@ -1000,7 +1004,7 @@ public class DbTools {
 		         e.printStackTrace();
 		    }
 		try {
-		     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
+		     connect = DriverManager.getConnection(L,U,H);
 		     Statement=connect.prepareStatement("insert into syspj values(?,?,?)");
 		     Statement.setString(1,ipt.STR);
 		     Statement.setString(2,ipt.DTA);
@@ -1034,7 +1038,7 @@ public class DbTools {
 		         e.printStackTrace();
 		    }
 		try {
-		     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
+		     connect = DriverManager.getConnection(L,U,H);
 		     Statement=connect.prepareStatement("insert into pj"+PJID+" values(?,?,?,?,?,?)");
 		     Statement.setString(1,p1.frm);
 		     Statement.setString(2,p1.mes);
@@ -1078,7 +1082,7 @@ public class DbTools {
 		         e.printStackTrace();
 		    }
 		try {
-		     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
+		     connect = DriverManager.getConnection(L,U,H);
 		     Statement=connect.prepareStatement("SELECT * FROM" + " PJ"+String.valueOf(mESID)+" where proc=?");
 		     Statement.setLong(1,i);
 		     rs =Statement.executeQuery();
@@ -1130,7 +1134,7 @@ public class DbTools {
 		         e.printStackTrace();
 		    }
 		try {
-		     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
+		     connect = DriverManager.getConnection(L,U,H);
 		     Statement=connect.prepareStatement("update Pj"+PJID+ " set "+ope+" ? where frm=? and DTA=?");
 		     Statement.setLong(1,dat);
 		     Statement.setString(2,frm);
@@ -1167,7 +1171,7 @@ public class DbTools {
 		         e.printStackTrace();
 		    }
 		try {
-		     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
+		     connect = DriverManager.getConnection(L,U,H);
 		     Statement=connect.prepareStatement("select * from pj"+PJID+" where frm=?");
 		     Statement.setString(1,to);
 		     rs=Statement.executeQuery();
@@ -1203,7 +1207,7 @@ public class DbTools {
 		         e.printStackTrace();
 		    }
 		try {
-		     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
+		     connect = DriverManager.getConnection(L,U,H);
 		     Statement=connect.prepareStatement("delete from pj"+PJID+" where frm=?");
 		     Statement.setString(1,frm);
 		     Statement.executeUpdate();
@@ -1253,7 +1257,7 @@ public class DbTools {
 	    }
 		try
 		{
-		     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
+		     connect = DriverManager.getConnection(L,U,H);
 		     Statement=connect.prepareStatement(querrying_order.toString());
 		     rs =Statement.executeQuery();
 		     while(rs.next())
@@ -1316,7 +1320,7 @@ public class DbTools {
 		    DbTools.Rsfresh_Man(assess.frm,assess.star-tmp.get(0).star,1);
 			try
 			{
-			    connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
+			    connect = DriverManager.getConnection(L,U,H);
 			    Statement=connect.prepareStatement("update JD"+m_frm.PJID+" set DTA=?,STR=?,star=? where frm=? AND pos=?;");
 			    Statement.setString(1,assess.DTA);
 			    Statement.setString(2,assess.STR);
@@ -1331,7 +1335,7 @@ public class DbTools {
 	        }
 			try
 			{
-			    connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
+			    connect = DriverManager.getConnection(L,U,H);
 			    Statement=connect.prepareStatement("update JD"+m_others.PJID+" set DTA=?,STR=?,star=? where frm=? AND pos=?;");
 			    Statement.setString(1,assess.DTA);
 			    Statement.setString(2,assess.STR);
@@ -1365,7 +1369,7 @@ public class DbTools {
 			DbTools.Rsfresh_Man(assess.frm,1,3);
 			try
 			{
-			    connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
+			    connect = DriverManager.getConnection(L,U,H);
 			    Statement=connect.prepareStatement("insert into JD"+m_frm.PJID+" values(?,?,?,?,?);");
 			    Statement.setString(1,assess.frm);
 			    Statement.setString(2,assess.DTA);
@@ -1380,7 +1384,7 @@ public class DbTools {
 	        }
 			try
 			{
-			    connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
+			    connect = DriverManager.getConnection(L,U,H);
 			    Statement=connect.prepareStatement("insert into JD"+m_others.PJID+" values(?,?,?,?,?);");
 			    Statement.setString(1,frm);
 			    Statement.setString(2,assess.DTA);
@@ -1435,7 +1439,7 @@ public class DbTools {
 	    }
 		try
 		{
-			connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
+			connect = DriverManager.getConnection(L,U,H);
 		    Statement=connect.prepareStatement("delete from JD"+m_frm.PJID+" where pos=? and frm=?;");
 		    Statement.setLong(1,1);
 		    Statement.setString(2,others);
@@ -1447,7 +1451,7 @@ public class DbTools {
         }
 		try
 		{
-			connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
+			connect = DriverManager.getConnection(L,U,H);
 		    Statement=connect.prepareStatement("delete from JD"+m_others.PJID+" where pos=? and frm=?;");
 		    Statement.setLong(1,0);
 		    Statement.setString(2,frm);
@@ -1548,7 +1552,7 @@ public class DbTools {
 	    }
 		try
 		{
-		     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
+		     connect = DriverManager.getConnection(L,U,H);
 		     Statement=connect.prepareStatement(querrying_order1.toString());
 		     rs =Statement.executeQuery();
 		     while(rs.next())
@@ -1663,7 +1667,7 @@ public class DbTools {
 	    }
 		try
 		{
-		     connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/db?useSSL=true","root","1234");
+		     connect = DriverManager.getConnection(L,U,H);
 		     Statement=connect.prepareStatement(querrying_order1.toString());
 		     rs =Statement.executeQuery();
 		     while(rs.next())

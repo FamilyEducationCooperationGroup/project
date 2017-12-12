@@ -18,6 +18,9 @@ public class Action_AddRequest {
 		session=context.getSession();
 		frm=(String)session.get("obj1");
 		to=(String)session.get("obj2");
+		if(frm==null) {
+			return "FAILED";
+		}
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
 		DTA=df.format(day);
 		p1=new pj(to, "    "+match_mes,DTA,3,-1,"");
@@ -27,10 +30,10 @@ public class Action_AddRequest {
 		(DbTools.CheckPjByusername(frm,to)==-1)
 		)
 		{
-		DbTools.Add_pj(p1,frm);
-		DbTools.Add_pj(p2,to);
-		DbTools.Rsfresh_Man(to,1,0);
-		return "SUCCESS";
+			DbTools.Add_pj(p1,frm);
+			DbTools.Add_pj(p2,to);
+			DbTools.Rsfresh_Man(to,1,0);
+			return "SUCCESS";
 		}
 		return "FAILED";
 	}

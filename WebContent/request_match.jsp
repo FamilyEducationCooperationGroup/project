@@ -8,7 +8,9 @@
         <title>申请</title>
     </head>
     <body class="bg1">
-    	
+    	 <div class="warningbarl">
+		    <s:property value="#parameters.type"/>
+	     </div>
     	<%
     	String s=request.getParameter("frm");
     	String t=request.getParameter("to");

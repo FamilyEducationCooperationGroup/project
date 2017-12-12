@@ -6,9 +6,22 @@
     <package name="backport" extends="struts-default">
         <action name="signin" class="backport.Action_Signin" method="signin">
             <result name="SUCCESS">fm.jsp</result>
+            <result name="FAILED11">signin.jsp?type=未输入用户名</result>
+            <result name="FAILED12">signin.jsp?type=用户名过长</result>
+            <result name="FAILED21">signin.jsp?type=未输入密码</result>
+            <result name="FAILED22">signin.jsp?type=密码过长</result>
+            <result name="FAILED23">signin.jsp?type=两次密码不一致</result>
+            <result name="FAILED3">signin.jsp?type=未选择科目</result>
+            <result name="FAILED4">signin.jsp?type=未选择年级</result>
+            <result name="FAILED5">signin.jsp?type=未选择时间段</result>
+            <result name="FAILED6">signin.jsp?type=电话号码格式错误</result>
+            <result name="FAILED7">signin.jsp?type=用户名已存在</result>
         </action>
         <action name="login" class="backport.Action_Login" method="login">
             <result name="SUCCESS">mw.jsp</result>
+            <result name="FAILED1">fm.jsp?type=未输入用户名</result>
+            <result name="FAILED2">fm.jsp?type=未输入密码</result>
+            <result name="FAILED3">fm.jsp?type=用户名或密码错误</result>
         </action>
         <action name="search" class="backport.Action_Search" method="search">
         	<result name="SUCCESS">sr.jsp</result>
@@ -30,12 +43,16 @@
         </action>
         <action name="update" class="backport.Action_Update" method="update">
         	<result name="SUCCESS">fm.jsp</result>
+        	<result name="FAILED0">updatebox.jsp?type=两次密码不一致</result>
+            <result name="FAILED1">updatebox.jsp?type=密码过长</result>
+            <result name="FAILED2">updatebox.jsp?type=电话号码格式错误</result>
         </action>
         <action name="Systempj" class="backport.Action_Syspj" method="Syspj">
         	<result name="success">sendSucess.jsp</result>
         </action>
         <action name="requestmatch" class="backport.Action_AddRequest" method="AddRequest">
         	<result name="SUCCESS">sendSucess.jsp</result>
+        	<result name="FAILED">request_match.jsp?type=无法对已匹配的人再次匹配</result>
         </action>
         <action name="allow" class="backport.Action_Allow" method="Allow">
         	<result name="SUCCESS">sendSucess.jsp</result>

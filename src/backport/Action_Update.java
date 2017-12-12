@@ -1,6 +1,7 @@
 package backport;
 import java.util.Map;
-
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 public class Action_Update extends ActionSupport {
@@ -10,6 +11,7 @@ public class Action_Update extends ActionSupport {
 	private static final long serialVersionUID = 1L;
 	Man person;
 	String pwd;
+	String pwdr;
 	String username;
 	int[] grades;
 	int[] subjects;
@@ -46,6 +48,19 @@ public class Action_Update extends ActionSupport {
 		return String.valueOf(ans);
 	}
 	public String update() {
+		Pattern pattern = Pattern.compile("[0-9]*");
+        Matcher isNum = pattern.matcher(tel);
+		if(!pwd.equals(pwdr)) {
+			return "FAILED0";
+		}
+        if (pwd.length()>20)
+		{
+			return "FAILED1";//用户名过长
+		}
+		else if (!isNum.matches()||tel.length()>11)
+		{
+			return "FAILED2";//电话号格式出错
+		}
 		ActionContext context=ActionContext.getContext();
 		session=context.getSession();
 		username=(String)session.get("obj1");
@@ -112,5 +127,11 @@ public class Action_Update extends ActionSupport {
 	}
 	public void setPlace(int place) {
 		this.place = place;
+	}
+	public String getPwdr() {
+		return pwdr;
+	}
+	public void setPwdr(String pwdr) {
+		this.pwdr = pwdr;
 	}
 }

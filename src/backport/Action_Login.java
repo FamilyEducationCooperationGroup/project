@@ -154,16 +154,25 @@ public class Action_Login extends ActionSupport {
 		return ans;
 	}
 	public String login() {
-		if(username.equals("")||pwd.equals(""))
+		if(username.equals(""))
 		{
-			return "FAILED";
+			return "FAILED1";
+		}
+		else if (pwd.equals(""))
+		{
+			return "FAILED2";
+		}
+		else if (username.length()>20||pwd.length()>20)
+		{
+			return "FAILED3";
 		}
 		person=new Man(username,2,null,2,pwd,null,null,null,0,0,0,0,0,-1,null,0,0);
 		person=DbTools.Fill(person);
 		if(person==null)
 		{			
-			return "FAILED";
+			return "FAILED3";
 		}
+		job=person.job;
 		result=convertResult(DbTools.Match(person));
 		MESID=person.MESID;
 		unread=person.unread;
